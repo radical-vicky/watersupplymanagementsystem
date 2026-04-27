@@ -103,7 +103,7 @@
                         <td style="padding: 12px 16px; color: #f0f6ff;">{{ reading.reading_value|floatformat:2 }}</td>
                         <td style="padding: 12px 16px; color: #5bbce0;">{{ reading.consumption|floatformat:2 }}</td>
                         <td style="padding: 12px 16px;">
-                            {% if reading.consumption > 10 %}
+                            {% if reading.is_high_consumption %}
                             <span class="badge-warning">High Usage</span>
                             {% else %}
                             <span class="badge-success">Normal</span>

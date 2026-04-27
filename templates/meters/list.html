@@ -11,7 +11,7 @@
             <p style="color: #c0d6e8;">Monitor your water consumption in real-time</p>
         </div>
         <div class="mt-2 mt-sm-0">
-            <span style="color: #a8c4d8;">Total: {{ total_meters }} active meter{{ total_meters|pluralize }}</span>
+            <span style="color: #a8c4d8;">Total: {{ total_meters }} meter{{ total_meters|pluralize }}</span>
         </div>
     </div>
 
@@ -22,7 +22,9 @@
             <div class="github-card h-100">
                 <div class="github-card-header d-flex justify-content-between align-items-center">
                     <h5 class="fw-semibold mb-0" style="color: #5bbce0;">{{ meter.meter_id }}</h5>
-                    <span class="badge-success">Active</span>
+                    <span class="{% if meter.status == 'active' %}badge-success{% else %}badge-warning{% endif %}">
+                        {{ meter.get_status_display }}
+                    </span>
                 </div>
                 <div class="github-card-body">
                     <!-- Location -->
@@ -86,7 +88,7 @@
             <div class="github-card text-center py-5">
                 <div style="font-size: 48px; opacity: 0.5; margin-bottom: 16px;">📭</div>
                 <h5 style="color: #c0d6e8;">No Water Meters Found</h5>
-                <p style="color: #a8c4d8;">Contact your water provider to register a meter</p>
+                <p style="color: #a8c4d8;">Run "python manage.py simulate_data --quick" to create test meters</p>
             </div>
         </div>
         {% endfor %}
