@@ -1,0 +1,45 @@
+{% extends 'base_dashboard.html' %}
+
+{% block title %}Sign Out · AquaFlow{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-0">
+    <div class="row justify-content-center">
+        <div class="col-lg-5">
+            <!-- Simple Header -->
+            <div class="text-center mb-4">
+                <h1 class="h3 fw-semibold" style="color: #7fcde8;">Sign Out</h1>
+                <p style="color: #c0d6e8;">Are you sure you want to sign out?</p>
+            </div>
+
+            <!-- Logout Card -->
+            <div class="github-card">
+                <div class="github-card-body p-4 text-center">
+                    <!-- Icon -->
+                    <div style="width: 70px; height: 70px; background: rgba(231, 76, 60, 0.15); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
+                        <svg class="w-8 h-8" style="color: #e74c3c;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+                        </svg>
+                    </div>
+                    
+                    <p style="color: #c0d6e8; margin-bottom: 24px;">
+                        You will be redirected to the home page after signing out.
+                    </p>
+                    
+                    <form method="post" action="{% url 'account_logout' %}">
+                        {% csrf_token %}
+                        <div class="d-flex gap-3">
+                            <button type="submit" class="btn-primary-custom" style="flex: 1; padding: 12px; background: linear-gradient(135deg, #e74c3c, #c0392b);">
+                                Yes, Sign Out
+                            </button>
+                            <a href="{% url 'dashboard:home' %}" class="btn-github" style="padding: 12px 20px;">
+                                Cancel
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

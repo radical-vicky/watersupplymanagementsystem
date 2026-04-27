@@ -1,0 +1,107 @@
+{% extends 'base_dashboard.html' %}
+
+{% block title %}Billing · AquaFlow{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-0">
+    <!-- Header -->
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="h3 fw-semibold mb-1" style="color: #7fcde8;">Billing</h1>
+            <p style="color: #c0d6e8;">View and manage your water bills</p>
+        </div>
+        <div class="mt-2 mt-sm-0">
+            <span style="color: #a8c4d8;">{{ bills|length }} bill{{ bills|length|pluralize }} total</span>
+        </div>
+    </div>
+
+    <!-- Summary Cards -->
+    <div class="row g-3 mb-4">
+        <div class="col-md-6 col-xl-3">
+            <div class="stat-card">
+                <div style="color: #a8c4d8; font-size: 12px;">Total Bills</div>
+                <div style="font-size: 32px; font-weight: 700; color: #7fcde8;">{{ bills|length }}</div>
+                <div style="color: #c0d6e8; font-size: 13px;">All time</div>
+            </div>
+        </div>
+        <div class="col-md-6 col-xl-3">
+            <div class="stat-card">
+                <div style="color: #a8c4d8; font-size: 12px;">Pending Bills</div>
+                <div style="font-size: 32px; font-weight: 700; color: #f39c12;">{{ pending_count }}</div>
+                <div style="color: #c0d6e8; font-size: 13px;">Need payment</div>
+            </div>
+        </div>
+        <div class="col-md-6 col-xl-3">
+            <div class="stat-card">
+                <div style="color: #a8c4d8; font-size: 12px;">Paid Bills</div>
+                <div style="font-size: 32px; font-weight: 700; color: #2ecc71;">{{ paid_count }}</div>
+                <div style="color: #c0d6e8; font-size: 13px;">Completed</div>
+            </div>
+        </div>
+        <div class="col-md-6 col-xl-3">
+            <div class="stat-card">
+                <div style="color: #a8c4d8; font-size: 12px;">Total Amount Due</div>
+                <div style="font-size: 32px; font-weight: 700; color: #e74c3c;">KES {{ total_due|floatformat:0 }}</div>
+                <div style="color: #c0d6e8; font-size: 13px;">Outstanding balance</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bills Table with Pay Button -->
+    <div class="github-card">
+        <div class="github-card-header">
+            <h5 class="fw-semibold mb-0" style="color: #5bbce0;">Water Bills</h5>
+        </div>
+        <div class="p-0">
+            <div class="table-responsive">
+                <table class="github-table mb-0">
+                    <thead>
+                        <tr>
+                            <th style="padding: 12px 16px;">Bill Number</th>
+                            <th style="padding: 12px 16px;">Period</th>
+                            <th style="padding: 12px 16px;">Consumption</th>
+                            <th style="padding: 12px 16px;">Amount</th>
+                            <th style="padding: 12px 16px;">Due Date</th>
+                            <th style="padding: 12px 16px;">Status</th>
+                            <th style="padding: 12px 16px;">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for bill in bills %}
+                        <tr style="border-bottom: 1px solid rgba(91, 188, 224, 0.1);">
+                            <td style="padding: 12px 16px;"><code style="color: #5bbce0;">{{ bill.bill_number }}</code></td>
+                            <td style="padding: 12px 16px; color: #c0d6e8;">{{ bill.billing_month|date:"F Y" }}</td>
+                            <td style="padding: 12px 16px; color: #c0d6e8;">{{ bill.consumption|floatformat:1 }} m³</td>
+                            <td style="padding: 12px 16px; color: #7fcde8;">KES {{ bill.total_amount|floatformat:0 }}</td>
+                            <td style="padding: 12px 16px; color: {% if bill.due_date < today %} #e74c3c {% else %} #c0d6e8 {% endif %};">{{ bill.due_date|date:"M d, Y" }}</td>
+                            <td style="padding: 12px 16px;">
+                                {% if bill.status == 'paid' %}
+                                <span class="badge-success">Paid</span>
+                                {% elif bill.status == 'pending' %}
+                                <span class="badge-warning">Pending</span>
+                                {% else %}
+                                <span class="badge-danger">{{ bill.get_status_display }}</span>
+                                {% endif %}
+                            </td>
+                            <td style="padding: 12px 16px;">
+                                {% if bill.status == 'pending' %}
+                                <a href="{% url 'payments:initiate' bill.bill_number %}" class="btn-primary-custom" style="padding: 6px 16px; font-size: 12px; text-decoration: none;">
+                                    Pay Now
+                                </a>
+                                {% else %}
+                                <a href="{% url 'billing:detail' bill.bill_number %}" style="color: #a8c4d8; text-decoration: none;">View</a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="7" class="text-center py-4" style="color: #a8c4d8;">No bills available</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

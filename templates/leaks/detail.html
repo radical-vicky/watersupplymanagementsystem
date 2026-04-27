@@ -1,0 +1,109 @@
+{% extends 'base_dashboard.html' %}
+
+{% block title %}Leak Details · {{ leak.report_id }}{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-0">
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <!-- Header -->
+            <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
+                <div>
+                    <h1 class="h3 fw-semibold mb-1" style="color: #7fcde8;">Leak Report Details</h1>
+                    <p style="color: #c0d6e8;">Report #{{ leak.report_id }}</p>
+                </div>
+                <div class="mt-2 mt-sm-0">
+                    <a href="{% url 'leaks:list' %}" class="btn-github">← Back to Leaks</a>
+                </div>
+            </div>
+
+            <!-- Main Card -->
+            <div class="github-card">
+                <div class="github-card-header d-flex justify-content-between align-items-center">
+                    <h5 class="fw-semibold mb-0" style="color: #5bbce0;">Report Information</h5>
+                    <span class="{% if leak.status == 'resolved' %}badge-success{% elif leak.status == 'in_progress' %}badge-info{% elif leak.status == 'confirmed' %}badge-warning{% else %}badge-danger{% endif %}">
+                        {{ leak.get_status_display }}
+                    </span>
+                </div>
+                <div class="github-card-body">
+                    <!-- Details Table -->
+                    <table style="width: 100%; margin-bottom: 20px;">
+                        <tr style="border-bottom: 1px solid rgba(91, 188, 224, 0.15);">
+                            <td style="padding: 12px 0; color: #a8c4d8; width: 40%;">Report ID</td>
+                            <td style="padding: 12px 0; color: #f0f6ff;"><code>{{ leak.report_id }}</code></td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(91, 188, 224, 0.15);">
+                            <td style="padding: 12px 0; color: #a8c4d8;">Type</td>
+                            <td style="padding: 12px 0; color: #f0f6ff;">{{ leak.get_type_display }}</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(91, 188, 224, 0.15);">
+                            <td style="padding: 12px 0; color: #a8c4d8;">Water Meter</td>
+                            <td style="padding: 12px 0; color: #f0f6ff;">{{ leak.meter.meter_id }} at {{ leak.meter.location }}</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(91, 188, 224, 0.15);">
+                            <td style="padding: 12px 0; color: #a8c4d8;">Leak Location</td>
+                            <td style="padding: 12px 0; color: #f0f6ff;">{{ leak.location }}</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(91, 188, 224, 0.15);">
+                            <td style="padding: 12px 0; color: #a8c4d8;">Reported Date</td>
+                            <td style="padding: 12px 0; color: #f0f6ff;">{{ leak.reported_at|date:"F d, Y H:i:s" }}</td>
+                        </tr>
+                        {% if leak.resolved_at %}
+                        <tr style="border-bottom: 1px solid rgba(91, 188, 224, 0.15);">
+                            <td style="padding: 12px 0; color: #a8c4d8;">Resolved Date</td>
+                            <td style="padding: 12px 0; color: #f0f6ff;">{{ leak.resolved_at|date:"F d, Y H:i:s" }}</td>
+                        </tr>
+                        {% endif %}
+                        {% if leak.assigned_technician %}
+                        <tr style="border-bottom: 1px solid rgba(91, 188, 224, 0.15);">
+                            <td style="padding: 12px 0; color: #a8c4d8;">Assigned Technician</td>
+                            <td style="padding: 12px 0; color: #f0f6ff;">{{ leak.assigned_technician.get_full_name|default:leak.assigned_technician.username }}</td>
+                        </tr>
+                        {% endif %}
+                        {% if leak.estimated_water_loss %}
+                        <tr style="border-bottom: 1px solid rgba(91, 188, 224, 0.15);">
+                            <td style="padding: 12px 0; color: #a8c4d8;">Estimated Water Loss</td>
+                            <td style="padding: 12px 0; color: #f0f6ff;">{{ leak.estimated_water_loss }} liters</td>
+                        </tr>
+                        {% endif %}
+                    </table>
+                    
+                    <!-- Description -->
+                    <div style="background: rgba(91, 188, 224, 0.05); border-radius: 8px; padding: 15px; margin-bottom: 20px;">
+                        <div style="color: #7fcde8; margin-bottom: 8px;">Description</div>
+                        <div style="color: #c0d6e8;">{{ leak.description|linebreaks }}</div>
+                    </div>
+                    
+                    <!-- Image if exists -->
+                    {% if leak.image %}
+                    <div style="margin-bottom: 20px;">
+                        <div style="color: #7fcde8; margin-bottom: 8px;">Attached Image</div>
+                        <img src="{{ leak.image.url }}" alt="Leak image" style="max-width: 100%; border-radius: 8px; border: 1px solid rgba(91, 188, 224, 0.3);">
+                    </div>
+                    {% endif %}
+                    
+                    <!-- Status Update (for admin/technician) -->
+                    {% if user.role == 'admin' or user.role == 'technician' %}
+                    <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(91, 188, 224, 0.2);">
+                        <h6 style="color: #5bbce0; margin-bottom: 12px;">Update Status</h6>
+                        <form method="post" action="{% url 'leaks:update' leak.report_id %}">
+                            {% csrf_token %}
+                            <div class="d-flex gap-3">
+                                <select name="status" class="form-control" style="background: rgba(18, 52, 86, 0.8); border: 1px solid rgba(91, 188, 224, 0.3); color: #f0f6ff; border-radius: 8px; padding: 10px; flex: 1;">
+                                    <option value="detected" {% if leak.status == 'detected' %}selected{% endif %}>Detected</option>
+                                    <option value="confirmed" {% if leak.status == 'confirmed' %}selected{% endif %}>Confirmed</option>
+                                    <option value="in_progress" {% if leak.status == 'in_progress' %}selected{% endif %}>In Progress</option>
+                                    <option value="resolved" {% if leak.status == 'resolved' %}selected{% endif %}>Resolved</option>
+                                    <option value="false_alarm" {% if leak.status == 'false_alarm' %}selected{% endif %}>False Alarm</option>
+                                </select>
+                                <button type="submit" class="btn-primary-custom">Update</button>
+                            </div>
+                        </form>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

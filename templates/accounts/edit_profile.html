@@ -1,0 +1,106 @@
+{% extends 'base_dashboard.html' %}
+
+{% block title %}Edit Profile · AquaFlow{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-0">
+    <!-- Header -->
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="h3 fw-semibold mb-1" style="color: #7fcde8;">Edit Profile</h1>
+            <p style="color: #c0d6e8;">Update your personal information</p>
+        </div>
+        <div class="mt-2 mt-sm-0">
+            <a href="{% url 'accounts:profile' %}" class="btn-github">
+                ← Back to Profile
+            </a>
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <!-- Edit Form Card -->
+            <div class="github-card">
+                <div class="github-card-header">
+                    <h5 class="fw-semibold mb-0" style="color: #5bbce0;">Personal Information</h5>
+                </div>
+                <div class="github-card-body">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        <!-- Username (readonly) -->
+                        <div class="mb-3">
+                            <label style="color: #a8c4d8; display: block; margin-bottom: 8px;">Username</label>
+                            <input type="text" class="form-control" value="{{ user.username }}" disabled style="background: rgba(10, 41, 61, 0.5); border: 1px solid rgba(91, 188, 224, 0.3); color: #a8c4d8; border-radius: 8px; padding: 10px; width: 100%;">
+                            <div style="color: #6a8fa0; font-size: 12px; margin-top: 5px;">Username cannot be changed</div>
+                        </div>
+                        
+                        <!-- First Name -->
+                        <div class="mb-3">
+                            <label style="color: #a8c4d8; display: block; margin-bottom: 8px;">First Name</label>
+                            <input type="text" name="first_name" class="form-control" value="{{ user.first_name }}" placeholder="Enter your first name" style="background: rgba(13, 39, 66, 0.8); border: 1px solid rgba(91, 188, 224, 0.3); color: #e6f7ff; border-radius: 8px; padding: 10px; width: 100%;">
+                        </div>
+                        
+                        <!-- Last Name -->
+                        <div class="mb-3">
+                            <label style="color: #a8c4d8; display: block; margin-bottom: 8px;">Last Name</label>
+                            <input type="text" name="last_name" class="form-control" value="{{ user.last_name }}" placeholder="Enter your last name" style="background: rgba(13, 39, 66, 0.8); border: 1px solid rgba(91, 188, 224, 0.3); color: #e6f7ff; border-radius: 8px; padding: 10px; width: 100%;">
+                        </div>
+                        
+                        <!-- Email -->
+                        <div class="mb-3">
+                            <label style="color: #a8c4d8; display: block; margin-bottom: 8px;">Email Address *</label>
+                            <input type="email" name="email" class="form-control" value="{{ user.email }}" required placeholder="Enter your email address" style="background: rgba(13, 39, 66, 0.8); border: 1px solid rgba(91, 188, 224, 0.3); color: #e6f7ff; border-radius: 8px; padding: 10px; width: 100%;">
+                        </div>
+                        
+                        <!-- Phone Number -->
+                        <div class="mb-3">
+                            <label style="color: #a8c4d8; display: block; margin-bottom: 8px;">Phone Number</label>
+                            <input type="tel" name="phone_number" class="form-control" value="{{ user.phone_number|default:'' }}" placeholder="+254712345678" style="background: rgba(13, 39, 66, 0.8); border: 1px solid rgba(91, 188, 224, 0.3); color: #e6f7ff; border-radius: 8px; padding: 10px; width: 100%;">
+                            <div style="color: #6a8fa0; font-size: 12px; margin-top: 5px;">Format: +254XXXXXXXXX</div>
+                        </div>
+                        
+                        <!-- Address -->
+                        <div class="mb-3">
+                            <label style="color: #a8c4d8; display: block; margin-bottom: 8px;">Address</label>
+                            <textarea name="address" rows="3" class="form-control" placeholder="Enter your address" style="background: rgba(13, 39, 66, 0.8); border: 1px solid rgba(91, 188, 224, 0.3); color: #e6f7ff; border-radius: 8px; padding: 10px; width: 100%;">{{ user.address }}</textarea>
+                        </div>
+                        
+                        <!-- Profile Picture -->
+                        <div class="mb-4">
+                            <label style="color: #a8c4d8; display: block; margin-bottom: 8px;">Profile Picture</label>
+                            <input type="file" name="profile_picture" class="form-control" accept="image/*" style="background: rgba(13, 39, 66, 0.8); border: 1px solid rgba(91, 188, 224, 0.3); color: #e6f7ff; border-radius: 8px; padding: 8px; width: 100%;">
+                            <div style="color: #6a8fa0; font-size: 12px; margin-top: 5px;">Upload a profile picture (JPG, PNG)</div>
+                        </div>
+                        
+                        <!-- Action Buttons -->
+                        <div class="d-flex gap-3 mt-4">
+                            <button type="submit" class="btn-primary-custom">
+                                Save Changes
+                            </button>
+                            <a href="{% url 'accounts:profile' %}" class="btn-github">
+                                Cancel
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Change Password Link -->
+            <div class="github-card mt-4">
+                <div class="github-card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="fw-semibold mb-1" style="color: #5bbce0;">Change Password</h6>
+                            <p style="color: #6a8fa0; font-size: 12px; margin-bottom: 0;">Update your account password</p>
+                        </div>
+                        <a href="{% url 'account_change_password' %}" class="btn-github">
+                            Change Password →
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

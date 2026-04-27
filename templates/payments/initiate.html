@@ -1,0 +1,97 @@
+{% extends 'base_dashboard.html' %}
+
+{% block title %}Make Payment · AquaFlow{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-0">
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
+                <div>
+                    <h1 class="h3 fw-semibold mb-1" style="color: #7fcde8;">Make Payment</h1>
+                    <p style="color: #c0d6e8;">Pay bill {{ bill.bill_number }}</p>
+                </div>
+                <div>
+                    <a href="{% url 'billing:list' %}" class="btn-github">← Back to Bills</a>
+                </div>
+            </div>
+
+            <div class="github-card">
+                <div class="github-card-header">
+                    <h5 class="fw-semibold mb-0" style="color: #5bbce0;">Bill Summary</h5>
+                </div>
+                <div class="github-card-body">
+                    <div class="d-flex justify-content-between py-2 border-bottom" style="border-color: rgba(91, 188, 224, 0.2);">
+                        <span style="color: #a8c4d8;">Bill Number</span>
+                        <span style="color: #e6f7ff;">{{ bill.bill_number }}</span>
+                    </div>
+                    <div class="d-flex justify-content-between py-2 border-bottom" style="border-color: rgba(91, 188, 224, 0.2);">
+                        <span style="color: #a8c4d8;">Billing Period</span>
+                        <span style="color: #e6f7ff;">{{ bill.billing_month|date:"F Y" }}</span>
+                    </div>
+                    <div class="d-flex justify-content-between py-2 border-bottom" style="border-color: rgba(91, 188, 224, 0.2);">
+                        <span style="color: #a8c4d8;">Water Consumption</span>
+                        <span style="color: #e6f7ff;">{{ bill.consumption|floatformat:1 }} m³</span>
+                    </div>
+                    <div class="d-flex justify-content-between py-2 border-bottom" style="border-color: rgba(91, 188, 224, 0.2);">
+                        <span style="color: #a8c4d8;">Due Date</span>
+                        <span style="color: #e6f7ff;">{{ bill.due_date|date:"M d, Y" }}</span>
+                    </div>
+                    <div class="d-flex justify-content-between py-2 mt-2">
+                        <span style="font-size: 18px; font-weight: 700; color: #7fcde8;">Total Amount</span>
+                        <span style="font-size: 24px; font-weight: 700; color: #7fcde8;">KES {{ bill.total_amount|floatformat:2 }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="github-card mt-4">
+                <div class="github-card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label style="color: #a8c4d8; display: block; margin-bottom: 8px;">Payment Method</label>
+                            <select name="payment_method" class="form-control" required style="background: rgba(13, 39, 66, 0.8); border: 1px solid rgba(91, 188, 224, 0.3); color: #e6f7ff; border-radius: 8px; padding: 10px; width: 100%;">
+                                <option value="mpesa">M-Pesa</option>
+                                <option value="card">Credit/Debit Card</option>
+                                <option value="bank">Bank Transfer</option>
+                                <option value="cash">Cash (Office)</option>
+                            </select>
+                        </div>
+                        <div class="mb-3" id="phoneField">
+                            <label style="color: #a8c4d8; display: block; margin-bottom: 8px;">Phone Number (for M-Pesa)</label>
+                            <input type="tel" name="phone_number" class="form-control" placeholder="0712345678" style="background: rgba(13, 39, 66, 0.8); border: 1px solid rgba(91, 188, 224, 0.3); color: #e6f7ff; border-radius: 8px; padding: 10px; width: 100%;">
+                        </div>
+                        <button type="submit" class="btn-primary-custom w-100" style="padding: 12px;">
+                            Pay KES {{ bill.total_amount|floatformat:2 }}
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="github-card mt-4">
+                <div class="github-card-body">
+                    <div style="color: #a8c4d8; font-size: 12px; margin-bottom: 8px;">Payment Information</div>
+                    <div style="color: #c0d6e8; font-size: 13px;">
+                        <p>• M-Pesa Paybill Number: <strong style="color: #5bbce0;">123456</strong></p>
+                        <p>• Account Number: <strong style="color: #5bbce0;">{{ bill.bill_number }}</strong></p>
+                        <p>• Payment will be processed immediately</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const methodSelect = document.querySelector('select[name="payment_method"]');
+    const phoneField = document.getElementById('phoneField');
+    
+    methodSelect.addEventListener('change', function() {
+        if (this.value === 'mpesa') {
+            phoneField.style.display = 'block';
+        } else {
+            phoneField.style.display = 'none';
+        }
+    });
+</script>
+{% endblock %}

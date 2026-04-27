@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+
+{% block title %}Create Account · Water Supply System{% endblock %}
+
+{% block content %}
+<div class="min-h-screen flex items-center justify-center px-4">
+    <div class="max-w-md w-full">
+        <!-- Back to Home Link -->
+        <div class="mb-4">
+            <a href="/" class="text-gray-400 hover:text-white transition inline-flex items-center gap-2">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                </svg>
+                Back to Home
+            </a>
+        </div>
+
+        <div class="text-center mb-6">
+            <h1 class="text-3xl font-bold" style="color: #7fcde8;">Create Account</h1>
+            <p class="text-gray-400 mt-2">Join Water Supply System today</p>
+        </div>
+
+        <div class="glass-card p-8" data-aos="fade-up">
+            <form method="post" action="{% url 'account_signup' %}">
+                {% csrf_token %}
+                
+                <div class="mb-3">
+                    <label class="block text-gray-300 text-sm font-medium mb-2">Username</label>
+                    <input type="text" name="username" class="glass-input" placeholder="Choose a username" required autofocus>
+                </div>
+                
+                <div class="mb-3">
+                    <label class="block text-gray-300 text-sm font-medium mb-2">Email Address</label>
+                    <input type="email" name="email" class="glass-input" placeholder="Enter your email" required>
+                </div>
+                
+                <div class="mb-3">
+                    <label class="block text-gray-300 text-sm font-medium mb-2">Phone Number (Optional)</label>
+                    <input type="tel" name="phone_number" class="glass-input" placeholder="+254712345678">
+                </div>
+                
+                <div class="mb-3">
+                    <label class="block text-gray-300 text-sm font-medium mb-2">Password</label>
+                    <input type="password" name="password1" class="glass-input" placeholder="Create a password" required>
+                </div>
+                
+                <div class="mb-4">
+                    <label class="block text-gray-300 text-sm font-medium mb-2">Confirm Password</label>
+                    <input type="password" name="password2" class="glass-input" placeholder="Confirm your password" required>
+                </div>
+
+                {% if form.errors %}
+                    <div class="mb-4 p-3 rounded-lg bg-red-500/10 border border-red-500/30">
+                        {% for field, errors in form.errors.items %}
+                            {% for error in errors %}
+                                <small class="text-red-400">• {{ error }}</small><br>
+                            {% endfor %}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                {% if redirect_field_value %}
+                    <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}">
+                {% endif %}
+
+                <button type="submit" class="btn-primary w-full">
+                    Create Account
+                    <span class="ml-2">→</span>
+                </button>
+            </form>
+
+            <div class="mt-6 text-center">
+                <p class="text-gray-400 text-sm">
+                    Already have an account?
+                    <a href="{% url 'account_login' %}" class="text-blue-400 hover:text-blue-300 transition">
+                        Sign In
+                    </a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

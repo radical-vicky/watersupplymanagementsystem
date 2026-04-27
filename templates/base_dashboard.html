@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token }}">
+    
+    <title>{% block title %}Water Supply System · Dashboard{% endblock %}</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Ocean Blue Theme */
+        :root {
+            --ocean-deep: #0a192f;
+            --ocean-mid: #0d2742;
+            --ocean-light: #123456;
+            --ocean-bright: #5bbce0;
+            --ocean-glow: #7fcde8;
+            --ocean-teal: #3b8db0;
+            --bg-dark: #0a192f;
+            --bg-card: rgba(18, 52, 86, 0.85);
+            --bg-sidebar: rgba(10, 25, 47, 0.95);
+            --border-color: rgba(74, 168, 196, 0.25);
+            --text-primary: #e6f7ff;
+            --text-secondary: #8bb3c4;
+            --text-muted: #6a8fa0;
+            --accent-primary: #4aa8c4;
+            --accent-light: #6bc2d9;
+        }
+        
+        * {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0a192f 0%, #0d2742 50%, #123456 100%);
+            color: var(--text-primary);
+            font-size: 14px;
+            min-height: 100vh;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            width: 260px;
+            background: var(--bg-sidebar);
+            backdrop-filter: blur(16px);
+            border-right: 1px solid var(--border-color);
+            z-index: 1000;
+            overflow-y: auto;
+        }
+        
+        .sidebar-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .sidebar-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .sidebar-logo-icon {
+            background: linear-gradient(135deg, var(--ocean-bright), var(--ocean-glow));
+            border-radius: 10px;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .sidebar-logo-icon i {
+            color: white;
+            font-size: 18px;
+        }
+        
+        .sidebar-logo-text h5 {
+            font-size: 16px;
+            font-weight: 600;
+            margin: 0;
+            color: var(--text-primary);
+        }
+        
+        .sidebar-logo-text span {
+            font-size: 11px;
+            color: var(--accent-light);
+        }
+        
+        /* Sidebar Navigation */
+        .sidebar-nav {
+            padding: 16px 12px;
+        }
+        
+        .sidebar-nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 12px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s;
+            border-radius: 8px;
+            margin-bottom: 2px;
+        }
+        
+        .sidebar-nav-item i {
+            width: 20px;
+            font-size: 16px;
+        }
+        
+        .sidebar-nav-item:hover {
+            background: rgba(74, 168, 196, 0.15);
+            color: var(--accent-light);
+        }
+        
+        .sidebar-nav-item.active {
+            background: rgba(74, 168, 196, 0.15);
+            color: var(--accent-light);
+            border-left: 3px solid var(--accent-primary);
+        }
+        
+        .sidebar-nav-item.active i {
+            color: var(--accent-light);
+        }
+        
+        /* Main Content */
+        .main-content {
+            margin-left: 260px;
+            padding: 24px 32px;
+            min-height: 100vh;
+        }
+        
+        /* Top Bar */
+        .top-bar {
+            background: var(--bg-card);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 12px 20px;
+            margin-bottom: 24px;
+        }
+        
+        /* Cards */
+        .github-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            transition: all 0.2s;
+        }
+        
+        .github-card:hover {
+            border-color: var(--accent-primary);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 32px rgba(74, 168, 196, 0.1);
+        }
+        
+        .github-card-header {
+            background: rgba(10, 41, 61, 0.6);
+            border-bottom: 1px solid var(--border-color);
+            padding: 14px 20px;
+            border-radius: 12px 12px 0 0;
+        }
+        
+        .github-card-header h5 {
+            color: var(--accent-light);
+            margin-bottom: 0;
+        }
+        
+        .github-card-body {
+            padding: 20px;
+        }
+        
+        /* Stats Cards */
+        .stat-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            transition: all 0.2s;
+        }
+        
+        .stat-card:hover {
+            border-color: var(--accent-primary);
+            transform: translateY(-2px);
+        }
+        
+        .stat-number {
+            font-size: 32px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--ocean-glow), var(--ocean-bright));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            line-height: 1.2;
+        }
+        
+        /* Tables */
+        .github-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .github-table th {
+            text-align: left;
+            padding: 12px 16px;
+            background: rgba(10, 41, 61, 0.5);
+            border-bottom: 1px solid var(--border-color);
+            font-weight: 600;
+            color: var(--accent-light);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .github-table td {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border-color);
+            vertical-align: middle;
+            color: var(--text-secondary);
+        }
+        
+        .github-table tr:hover td {
+            background: rgba(74, 168, 196, 0.05);
+        }
+        
+        /* Badges */
+        .badge-success {
+            background: rgba(46, 204, 113, 0.15);
+            color: #2ecc71;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            border: 1px solid rgba(46, 204, 113, 0.3);
+        }
+        
+        .badge-warning {
+            background: rgba(243, 156, 18, 0.15);
+            color: #f39c12;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            border: 1px solid rgba(243, 156, 18, 0.3);
+        }
+        
+        .badge-danger {
+            background: rgba(231, 76, 60, 0.15);
+            color: #e74c3c;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            border: 1px solid rgba(231, 76, 60, 0.3);
+        }
+        
+        .badge-info {
+            background: rgba(74, 168, 196, 0.15);
+            color: var(--accent-light);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            border: 1px solid rgba(74, 168, 196, 0.3);
+        }
+        
+        /* Buttons */
+        .btn-github {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        
+        .btn-github:hover {
+            background: rgba(74, 168, 196, 0.15);
+            border-color: var(--accent-primary);
+            color: var(--accent-light);
+        }
+        
+        .btn-primary-custom {
+            background: linear-gradient(135deg, var(--ocean-bright), var(--ocean-teal));
+            border: none;
+            padding: 6px 14px;
+            border-radius: 8px;
+            color: white;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .btn-primary-custom:hover {
+            background: linear-gradient(135deg, var(--ocean-glow), var(--ocean-bright));
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(74, 168, 196, 0.3);
+        }
+        
+        /* Avatar */
+        .avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--ocean-bright), var(--ocean-teal));
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        /* Links */
+        a {
+            color: var(--accent-light);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        
+        a:hover {
+            color: var(--ocean-glow);
+            text-decoration: underline;
+        }
+        
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: var(--ocean-deep);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-primary);
+        }
+        
+        /* Code */
+        code {
+            background: rgba(74, 168, 196, 0.15);
+            padding: 2px 6px;
+            border-radius: 6px;
+            font-size: 12px;
+            color: var(--accent-light);
+        }
+        
+        /* Mobile Menu Button */
+        .mobile-menu-btn {
+            display: none;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 8px 12px;
+            color: var(--text-primary);
+            cursor: pointer;
+        }
+        
+        .mobile-menu-btn:hover {
+            background: rgba(74, 168, 196, 0.15);
+            border-color: var(--accent-primary);
+        }
+        
+        /* Sidebar Overlay for Mobile */
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(4px);
+            z-index: 999;
+        }
+        
+        .sidebar-overlay.active {
+            display: block;
+        }
+        
+        /* Responsive */
+        @media (max-width: 992px) {
+            .sidebar {
+                transform: translateX(-100%);
+                z-index: 1000;
+            }
+            .sidebar.mobile-open {
+                transform: translateX(0);
+            }
+            .main-content {
+                margin-left: 0;
+                padding: 16px;
+            }
+            .mobile-menu-btn {
+                display: block;
+            }
+            .top-bar {
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+        }
+        
+        /* Form controls */
+        .form-control, .form-select {
+            background: rgba(10, 41, 61, 0.8);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            border-radius: 8px;
+            padding: 10px;
+        }
+        
+        .form-control:focus, .form-select:focus {
+            background: rgba(10, 41, 61, 0.9);
+            border-color: var(--accent-primary);
+            box-shadow: none;
+            color: var(--text-primary);
+        }
+    </style>
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<!-- Sidebar -->
+<div class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+        <div class="sidebar-logo">
+            <div class="sidebar-logo-icon">
+                <i class="fas fa-tint"></i>
+            </div>
+            <div class="sidebar-logo-text">
+                <h5>Water Supply System</h5>
+                <span>Water Management</span>
+            </div>
+        </div>
+    </div>
+    
+    <div class="sidebar-nav">
+        <a href="{% url 'dashboard:home' %}" class="sidebar-nav-item {% if request.resolver_match.url_name == 'home' %}active{% endif %}">
+            <i class="fas fa-chart-line"></i>
+            <span>Dashboard</span>
+        </a>
+        <a href="{% url 'meters:list' %}" class="sidebar-nav-item">
+            <i class="fas fa-microchip"></i>
+            <span>Water Meters</span>
+        </a>
+        <a href="{% url 'billing:list' %}" class="sidebar-nav-item">
+            <i class="fas fa-receipt"></i>
+            <span>Billing</span>
+        </a>
+        <a href="{% url 'payments:history' %}" class="sidebar-nav-item">
+            <i class="fas fa-credit-card"></i>
+            <span>Payments</span>
+        </a>
+        <a href="{% url 'leaks:list' %}" class="sidebar-nav-item">
+            <i class="fas fa-tint"></i>
+            <span>Leak Reports</span>
+        </a>
+        <a href="{% url 'schedules:list' %}" class="sidebar-nav-item">
+            <i class="fas fa-calendar-alt"></i>
+            <span>Water Schedule</span>
+        </a>
+        <a href="{% url 'notifications:list' %}" class="sidebar-nav-item">
+            <i class="fas fa-bell"></i>
+            <span>Notifications</span>
+        </a>
+        <a href="{% url 'accounts:profile' %}" class="sidebar-nav-item">
+            <i class="fas fa-user"></i>
+            <span>Profile</span>
+        </a>
+    </div>
+</div>
+
+<!-- Main Content -->
+<div class="main-content">
+    <!-- Top Bar -->
+    <div class="top-bar d-flex justify-content-between align-items-center">
+        <button class="mobile-menu-btn" id="mobileMenuBtn">
+            <i class="fas fa-bars"></i>
+        </button>
+        
+        <div class="dropdown">
+            <button class="btn-github dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                <span class="avatar me-2">{{ user.get_full_name|default:user.username|slice:":2"|upper }}</span>
+                <span>{{ user.get_full_name|default:user.username }}</span>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end mt-2">
+                <li><a class="dropdown-item" href="{% url 'accounts:profile' %}"><i class="fas fa-user me-2"></i>Profile</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item text-danger" href="{% url 'account_logout' %}"><i class="fas fa-sign-out-alt me-2"></i>Sign out</a></li>
+            </ul>
+        </div>
+    </div>
+    
+    <!-- Flash Messages -->
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show mb-4" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+    
+    <!-- Content -->
+    {% block content %}{% endblock %}
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebarOverlay');
+    
+    if (mobileMenuBtn) {
+        mobileMenuBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('mobile-open');
+            if (overlay) overlay.classList.toggle('active');
+        });
+    }
+    
+    if (overlay) {
+        overlay.addEventListener('click', () => {
+            sidebar.classList.remove('mobile-open');
+            overlay.classList.remove('active');
+        });
+    }
+</script>
+{% block extra_js %}{% endblock %}
+</body>
+</html>

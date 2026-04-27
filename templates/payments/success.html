@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}Payment Successful{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6 text-center">
+        <div class="card">
+            <div class="card-body">
+                <div class="display-1 text-success">✓</div>
+                <h3>Payment Successful!</h3>
+                <p>Your payment of <strong>KES {{ payment.amount|floatformat:2 }}</strong> has been processed.</p>
+                <p>Transaction ID: <strong>{{ payment.transaction_id }}</strong></p>
+                <a href="{% url 'billing:list' %}" class="btn btn-primary">View My Bills</a>
+                <a href="{% url 'dashboard:home' %}" class="btn btn-secondary">Go to Dashboard</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

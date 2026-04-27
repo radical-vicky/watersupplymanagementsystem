@@ -1,0 +1,124 @@
+{% extends 'base_dashboard.html' %}
+
+{% block title %}Notifications · AquaFlow{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-0">
+    <!-- Header -->
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="h3 fw-semibold mb-1" style="color: #7fcde8;">Notifications</h1>
+            <p style="color: #c0d6e8;">Stay updated with your water service alerts</p>
+        </div>
+        <div class="mt-2 mt-sm-0">
+            {% if unread_count > 0 %}
+            <button id="markAllReadBtn" class="btn-github">Mark all as read</button>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Summary Card -->
+    <div class="row g-3 mb-4">
+        <div class="col-md-4">
+            <div class="stat-card">
+                <div style="color: #a8c4d8; font-size: 12px;">Total Notifications</div>
+                <div style="font-size: 32px; font-weight: 700; color: #7fcde8;">{{ notifications|length }}</div>
+                <div style="color: #c0d6e8; font-size: 13px;">All time</div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="stat-card">
+                <div style="color: #a8c4d8; font-size: 12px;">Unread</div>
+                <div style="font-size: 32px; font-weight: 700; color: #f39c12;">{{ unread_count }}</div>
+                <div style="color: #c0d6e8; font-size: 13px;">New notifications</div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="stat-card">
+                <div style="color: #a8c4d8; font-size: 12px;">Read</div>
+                <div style="font-size: 32px; font-weight: 700; color: #2ecc71;">{{ read_count }}</div>
+                <div style="color: #c0d6e8; font-size: 13px;">Already seen</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notifications List -->
+    <div class="github-card">
+        <div class="github-card-header">
+            <h5 class="fw-semibold mb-0" style="color: #5bbce0;">Recent Notifications</h5>
+        </div>
+        <div class="p-0">
+            {% if notifications %}
+                {% for notification in notifications %}
+                <div class="notification-item" data-id="{{ notification.id }}" style="border-bottom: 1px solid rgba(91, 188, 224, 0.1); {% if not notification.is_read %}background: rgba(91, 188, 224, 0.05);{% endif %}">
+                    <div style="padding: 16px 20px;">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div style="flex: 1;">
+                                <div class="d-flex align-items-center gap-2 mb-1">
+                                    {% if not notification.is_read %}
+                                    <span style="width: 8px; height: 8px; background: #5bbce0; border-radius: 50%; display: inline-block;"></span>
+                                    {% endif %}
+                                    <h6 class="fw-semibold mb-0" style="color: #f0f6ff;">{{ notification.title }}</h6>
+                                    <span class="badge-info" style="font-size: 10px;">{{ notification.get_type_display }}</span>
+                                </div>
+                                <p style="color: #c0d6e8; margin-bottom: 8px;">{{ notification.message }}</p>
+                                <div style="color: #a8c4d8; font-size: 12px;">
+                                    {{ notification.created_at|timesince }} ago
+                                </div>
+                            </div>
+                            {% if not notification.is_read %}
+                            <button class="mark-read-btn btn-github" data-id="{{ notification.id }}" style="padding: 4px 12px; font-size: 12px;">Mark read</button>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="text-center py-5">
+                    <div style="font-size: 48px; margin-bottom: 16px; opacity: 0.5;">🔔</div>
+                    <h5 style="color: #c0d6e8;">No notifications</h5>
+                    <p style="color: #a8c4d8;">You're all caught up!</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<script>
+    // Mark single notification as read
+    document.querySelectorAll('.mark-read-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const notificationId = this.dataset.id;
+            fetch(`/notifications/mark-read/${notificationId}/`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}',
+                    'Content-Type': 'application/json'
+                }
+            }).then(response => {
+                if (response.ok) {
+                    location.reload();
+                }
+            });
+        });
+    });
+    
+    // Mark all as read
+    const markAllBtn = document.getElementById('markAllReadBtn');
+    if (markAllBtn) {
+        markAllBtn.addEventListener('click', function() {
+            fetch('/notifications/mark-all-read/', {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}',
+                    'Content-Type': 'application/json'
+                }
+            }).then(response => {
+                if (response.ok) {
+                    location.reload();
+                }
+            });
+        });
+    }
+</script>
+{% endblock %}

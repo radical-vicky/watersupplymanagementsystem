@@ -1,0 +1,372 @@
+{% extends 'base_dashboard.html' %}
+
+{% block title %}Dashboard · Water Supply Management{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-0">
+
+    <!-- Welcome Section -->
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="h3 fw-semibold mb-1" style="color: #7fcde8;">Dashboard</h1>
+            <p style="color: #c0d6e8;">Welcome back, <span style="color: #5bbce0; font-weight: 500;">{{ username }}</span></p>
+        </div>
+        <div class="mt-2 mt-sm-0">
+            <span style="color: #a8c4d8;">{{ today|date:"l, F j, Y" }}</span>
+        </div>
+    </div>
+
+    <!-- Stats Grid - ALL CLICKABLE -->
+    <div class="row g-3 mb-4">
+        <!-- Water Used Card - Clickable -->
+        <div class="col-md-6 col-xl-3">
+            <a href="{% url 'meters:list' %}" style="text-decoration: none; display: block;">
+                <div class="stat-card" style="cursor: pointer; transition: all 0.3s;">
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <div>
+                            <span style="color: #a8c4d8; font-size: 12px;">WATER USED</span>
+                            <div style="font-size: 36px; font-weight: 700; color: #7fcde8;">{{ total_consumption|floatformat:1 }}</div>
+                            <span style="color: #a8c4d8; font-size: 12px;">cubic meters total</span>
+                        </div>
+                    </div>
+                    <div style="color: #c0d6e8; font-size: 13px; margin-top: 8px;">
+                        {{ monthly_consumption|floatformat:1 }} m³ this month
+                    </div>
+                </div>
+            </a>
+        </div>
+        
+        <!-- Total Meters Card - Clickable -->
+        <div class="col-md-6 col-xl-3">
+            <a href="{% url 'meters:list' %}" style="text-decoration: none; display: block;">
+                <div class="stat-card" style="cursor: pointer; transition: all 0.3s;">
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <div>
+                            <span style="color: #a8c4d8; font-size: 12px;">TOTAL METERS</span>
+                            <div style="font-size: 36px; font-weight: 700; color: #7fcde8;">{{ total_meters }}</div>
+                            <span style="color: #a8c4d8; font-size: 12px;">active devices</span>
+                        </div>
+                    </div>
+                    <div style="color: #2ecc71; font-size: 13px; margin-top: 8px;">
+                        All operational
+                    </div>
+                </div>
+            </a>
+        </div>
+        
+        <!-- Pending Bills Card - Clickable -->
+        <div class="col-md-6 col-xl-3">
+            <a href="{% url 'billing:list' %}" style="text-decoration: none; display: block;">
+                <div class="stat-card" style="cursor: pointer; transition: all 0.3s;">
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <div>
+                            <span style="color: #a8c4d8; font-size: 12px;">PENDING BILLS</span>
+                            <div style="font-size: 36px; font-weight: 700; color: #f39c12;">{{ pending_bills_count }}</div>
+                            <span style="color: #a8c4d8; font-size: 12px;">unpaid invoices</span>
+                        </div>
+                    </div>
+                    <div style="color: #c0d6e8; font-size: 13px; margin-top: 8px;">
+                        KES {{ total_due|floatformat:0 }} total due
+                    </div>
+                </div>
+            </a>
+        </div>
+        
+        <!-- Active Leaks Card - Clickable -->
+        <div class="col-md-6 col-xl-3">
+            <a href="{% url 'leaks:list' %}" style="text-decoration: none; display: block;">
+                <div class="stat-card" style="cursor: pointer; transition: all 0.3s;">
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <div>
+                            <span style="color: #a8c4d8; font-size: 12px;">ACTIVE LEAKS</span>
+                            <div style="font-size: 36px; font-weight: 700; color: #e74c3c;">{{ active_leaks_count }}</div>
+                            <span style="color: #a8c4d8; font-size: 12px;">need attention</span>
+                        </div>
+                    </div>
+                    <div style="color: #2ecc71; font-size: 13px; margin-top: 8px;">
+                        {{ resolved_leaks_count }} resolved
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <!-- Consumption Chart -->
+    <div class="github-card mb-4">
+        <div class="github-card-header d-flex justify-content-between align-items-center">
+            <h5 class="fw-semibold mb-0" style="color: #5bbce0;">Water Consumption Trend</h5>
+            <span style="color: #a8c4d8;">Last 7 days</span>
+        </div>
+        <div class="github-card-body">
+            <canvas id="consumptionChart" height="250"></canvas>
+        </div>
+    </div>
+
+    <!-- Two Column Layout -->
+    <div class="row g-3 mb-4">
+        <div class="col-lg-6">
+            <!-- Today's Schedule -->
+            <div class="github-card">
+                <div class="github-card-header">
+                    <h5 class="fw-semibold mb-0" style="color: #5bbce0;">Today's Water Schedule</h5>
+                </div>
+                <div class="github-card-body">
+                    {% if today_schedule %}
+                    <a href="{% url 'schedules:list' %}" style="text-decoration: none;">
+                        <div style="background: rgba(91, 188, 224, 0.1); border-radius: 10px; border: 1px solid rgba(91, 188, 224, 0.3); padding: 16px; cursor: pointer;">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="fw-semibold mb-1" style="color: #7fcde8;">{{ today_schedule.area_name }}</h6>
+                                    <span style="color: #a8c4d8;">Zone {{ today_schedule.zone_code }}</span>
+                                </div>
+                                <div class="text-end">
+                                    <span style="background: rgba(91, 188, 224, 0.15); color: #5bbce0; padding: 4px 12px; border-radius: 20px; font-size: 12px;">
+                                        {{ today_schedule.start_time|time:"H:i" }} - {{ today_schedule.end_time|time:"H:i" }}
+                                    </span>
+                                    <div style="color: #a8c4d8; font-size: 12px; margin-top: 5px;">{{ today_schedule.duration_hours }} hours</div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                    {% else %}
+                    <div class="text-center py-4">
+                        <p style="color: #a8c4d8;">No water supply scheduled for today</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-6">
+            <!-- Weekly Schedule -->
+            <div class="github-card">
+                <div class="github-card-header">
+                    <h5 class="fw-semibold mb-0" style="color: #5bbce0;">Weekly Schedule</h5>
+                </div>
+                <div class="p-0">
+                    <table class="github-table mb-0">
+                        <tbody>
+                            {% for schedule in weekly_schedule %}
+                            <tr style="border-bottom: 1px solid rgba(91, 188, 224, 0.15); cursor: pointer;" onclick="window.location.href='{% url 'schedules:list' %}'">
+                                <td style="width: 35%; padding: 12px 16px;"><span style="color: #7fcde8;">{{ schedule.get_day_of_week_display }}</span></td>
+                                <td style="width: 40%; padding: 12px 16px; color: #c0d6e8;">{{ schedule.area_name }}</td>
+                                <td style="width: 25%; padding: 12px 16px; text-align: right;"><code style="color: #5bbce0;">{{ schedule.start_time|time:"H:i" }} - {{ schedule.end_time|time:"H:i" }}</code></td>
+                             </tr>
+                            {% empty %}
+                            <tr><td colspan="3" class="text-center py-4" style="color: #a8c4d8;">No schedules available</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Meter Readings - Clickable rows -->
+    <div class="github-card mb-4">
+        <div class="github-card-header d-flex justify-content-between align-items-center">
+            <h5 class="fw-semibold mb-0" style="color: #5bbce0;">Recent Meter Readings</h5>
+            <a href="{% url 'meters:list' %}" style="color: #5bbce0; text-decoration: none;">View all →</a>
+        </div>
+        <div class="p-0">
+            <table class="github-table mb-0">
+                <thead>
+                    <tr>
+                        <th style="padding: 12px 16px;">Meter ID</th>
+                        <th style="padding: 12px 16px;">Reading (m³)</th>
+                        <th style="padding: 12px 16px;">Consumption</th>
+                        <th style="padding: 12px 16px;">Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for reading in recent_readings|slice:":5" %}
+                    <tr style="border-bottom: 1px solid rgba(91, 188, 224, 0.1); cursor: pointer;" onclick="window.location.href='{% url 'meters:detail' reading.meter.meter_id %}'">
+                        <td style="padding: 12px 16px;"><code style="color: #5bbce0;">{{ reading.meter.meter_id|truncatechars:10 }}</code></td>
+                        <td style="padding: 12px 16px; color: #c0d6e8;">{{ reading.reading_value|floatformat:2 }}</td>
+                        <td style="padding: 12px 16px; color: #c0d6e8;">{{ reading.consumption|floatformat:2 }} m³</td>
+                        <td style="padding: 12px 16px; color: #a8c4d8;">{{ reading.timestamp|date:"M d, H:i" }}</td>
+                     </tr>
+                    {% empty %}
+                    <tr><td colspan="4" class="text-center py-4" style="color: #a8c4d8;">No readings available</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Recent Bills and Payments - Clickable rows -->
+    <div class="row g-3">
+        <div class="col-md-6">
+            <div class="github-card">
+                <div class="github-card-header d-flex justify-content-between align-items-center">
+                    <h5 class="fw-semibold mb-0" style="color: #5bbce0;">Recent Bills</h5>
+                    <a href="{% url 'billing:list' %}" style="color: #5bbce0; text-decoration: none;">View all →</a>
+                </div>
+                <div class="p-0">
+                    <table class="github-table mb-0">
+                        <thead>
+                            <tr>
+                                <th style="padding: 12px 16px;">Bill Number</th>
+                                <th style="padding: 12px 16px;">Period</th>
+                                <th style="padding: 12px 16px;">Amount</th>
+                                <th style="padding: 12px 16px;">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for bill in recent_bills|slice:":5" %}
+                            <tr style="border-bottom: 1px solid rgba(91, 188, 224, 0.1); cursor: pointer;" onclick="window.location.href='{% url 'billing:detail' bill.bill_number %}'">
+                                <td style="padding: 12px 16px;"><code style="color: #5bbce0;">{{ bill.bill_number|truncatechars:10 }}</code></td>
+                                <td style="padding: 12px 16px; color: #c0d6e8;">{{ bill.billing_month|date:"M Y" }}</td>
+                                <td style="padding: 12px 16px; color: #7fcde8;">KES {{ bill.total_amount|floatformat:0 }}</td>
+                                <td style="padding: 12px 16px;">
+                                    {% if bill.status == 'paid' %}
+                                    <span style="background: rgba(46, 204, 113, 0.15); color: #2ecc71; padding: 4px 10px; border-radius: 20px; font-size: 12px;">Paid</span>
+                                    {% else %}
+                                    <span style="background: rgba(243, 156, 18, 0.15); color: #f39c12; padding: 4px 10px; border-radius: 20px; font-size: 12px;">Pending</span>
+                                    {% endif %}
+                                </td>
+                             </tr>
+                            {% empty %}
+                            <tr><td colspan="4" class="text-center py-4" style="color: #a8c4d8;">No bills available</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6">
+            <div class="github-card">
+                <div class="github-card-header d-flex justify-content-between align-items-center">
+                    <h5 class="fw-semibold mb-0" style="color: #5bbce0;">Recent Payments</h5>
+                    <a href="{% url 'payments:history' %}" style="color: #5bbce0; text-decoration: none;">View all →</a>
+                </div>
+                <div class="p-0">
+                    <table class="github-table mb-0">
+                        <thead>
+                            <tr>
+                                <th style="padding: 12px 16px;">Transaction</th>
+                                <th style="padding: 12px 16px;">Amount</th>
+                                <th style="padding: 12px 16px;">Method</th>
+                                <th style="padding: 12px 16px;">Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for payment in recent_payments|slice:":5" %}
+                            <tr style="border-bottom: 1px solid rgba(91, 188, 224, 0.1); cursor: pointer;" onclick="window.location.href='{% url 'payments:receipt' payment.transaction_id %}'">
+                                <td style="padding: 12px 16px;"><code style="color: #5bbce0;">{{ payment.transaction_id|truncatechars:12 }}</code></td>
+                                <td style="padding: 12px 16px; color: #7fcde8;">KES {{ payment.amount|floatformat:0 }}</td>
+                                <td style="padding: 12px 16px; color: #c0d6e8;">{{ payment.get_payment_method_display }}</td>
+                                <td style="padding: 12px 16px; color: #a8c4d8;">{{ payment.payment_date|date:"M d, Y" }}</td>
+                             </tr>
+                            {% empty %}
+                            <tr><td colspan="4" class="text-center py-4" style="color: #a8c4d8;">No payment history</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="github-card-header bg-transparent border-top">
+                    <div class="d-flex justify-content-between">
+                        <span style="color: #c0d6e8;">Total Paid</span>
+                        <span style="color: #2ecc71; font-weight: 600;">KES {{ total_paid|floatformat:0 }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Leaks - Clickable rows -->
+    <div class="github-card mt-4">
+        <div class="github-card-header d-flex justify-content-between align-items-center">
+            <h5 class="fw-semibold mb-0" style="color: #e74c3c;">Recent Leak Reports</h5>
+            <a href="{% url 'leaks:list' %}" style="color: #5bbce0; text-decoration: none;">View all →</a>
+        </div>
+        <div class="p-0">
+            <table class="github-table mb-0">
+                <thead>
+                    <tr>
+                        <th style="padding: 12px 16px;">Report ID</th>
+                        <th style="padding: 12px 16px;">Location</th>
+                        <th style="padding: 12px 16px;">Status</th>
+                        <th style="padding: 12px 16px;">Reported Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for leak in recent_leaks|slice:":5" %}
+                    <tr style="border-bottom: 1px solid rgba(91, 188, 224, 0.1); cursor: pointer;" onclick="window.location.href='{% url 'leaks:detail' leak.report_id %}'">
+                        <td style="padding: 12px 16px;"><code style="color: #5bbce0;">{{ leak.report_id|truncatechars:12 }}</code></td>
+                        <td style="padding: 12px 16px; color: #c0d6e8;">{{ leak.location|truncatechars:30 }}</td>
+                        <td style="padding: 12px 16px;">
+                            {% if leak.status == 'resolved' %}
+                            <span style="background: rgba(46, 204, 113, 0.15); color: #2ecc71; padding: 4px 10px; border-radius: 20px; font-size: 12px;">Resolved</span>
+                            {% elif leak.status == 'in_progress' %}
+                            <span style="background: rgba(91, 188, 224, 0.15); color: #5bbce0; padding: 4px 10px; border-radius: 20px; font-size: 12px;">In Progress</span>
+                            {% else %}
+                            <span style="background: rgba(231, 76, 60, 0.15); color: #e74c3c; padding: 4px 10px; border-radius: 20px; font-size: 12px;">Active</span>
+                            {% endif %}
+                        </td>
+                        <td style="padding: 12px 16px; color: #a8c4d8;">{{ leak.reported_at|date:"M d, Y" }}</td>
+                     </tr>
+                    {% empty %}
+                    <tr><td colspan="4" class="text-center py-4" style="color: #a8c4d8;">No leak reports</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const ctx = document.getElementById('consumptionChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: {{ chart_labels|safe }},
+            datasets: [{
+                label: 'Water Consumption (m³)',
+                data: {{ chart_data|safe }},
+                borderColor: '#5bbce0',
+                backgroundColor: 'rgba(91, 188, 224, 0.05)',
+                borderWidth: 2,
+                fill: true,
+                tension: 0.3,
+                pointBackgroundColor: '#7fcde8',
+                pointBorderColor: '#0a192f',
+                pointBorderWidth: 2,
+                pointRadius: 4,
+                pointHoverRadius: 6
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: { color: '#a8c4d8', boxWidth: 12, usePointStyle: true }
+                },
+                tooltip: {
+                    backgroundColor: '#0a192f',
+                    titleColor: '#7fcde8',
+                    bodyColor: '#c0d6e8',
+                    borderColor: '#5bbce0',
+                    borderWidth: 1
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    grid: { color: 'rgba(91, 188, 224, 0.1)' },
+                    ticks: { color: '#a8c4d8' },
+                    title: { display: true, text: 'Cubic Meters (m³)', color: '#a8c4d8' }
+                },
+                x: {
+                    grid: { display: false },
+                    ticks: { color: '#a8c4d8', autoSkip: true }
+                }
+            }
+        }
+    });
+</script>
+{% endblock %}

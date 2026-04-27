@@ -1,0 +1,95 @@
+{% extends 'base_dashboard.html' %}
+
+{% block title %}Notification · AquaFlow{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-0">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <!-- Header -->
+            <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
+                <div>
+                    <h1 class="h3 fw-semibold mb-1" style="color: #7fcde8;">Notification Details</h1>
+                    <p style="color: #c0d6e8;">{{ notification.title }}</p>
+                </div>
+                <div class="mt-2 mt-sm-0">
+                    <a href="{% url 'notifications:list' %}" class="btn-github">← Back to Notifications</a>
+                </div>
+            </div>
+
+            <!-- Notification Card -->
+            <div class="github-card">
+                <div class="github-card-header d-flex justify-content-between align-items-center">
+                    <h5 class="fw-semibold mb-0" style="color: #5bbce0;">{{ notification.title }}</h5>
+                    <span class="badge-info">{{ notification.get_type_display }}</span>
+                </div>
+                <div class="github-card-body">
+                    <!-- Meta info -->
+                    <div style="background: rgba(91, 188, 224, 0.05); border-radius: 8px; padding: 12px; margin-bottom: 20px;">
+                        <div class="row">
+                            <div class="col-6">
+                                <div style="color: #a8c4d8; font-size: 12px;">Received</div>
+                                <div style="color: #c0d6e8; font-size: 14px;">{{ notification.created_at|date:"F d, Y H:i:s" }}</div>
+                            </div>
+                            <div class="col-6">
+                                <div style="color: #a8c4d8; font-size: 12px;">Status</div>
+                                <div>
+                                    {% if notification.is_read %}
+                                    <span class="badge-success">Read on {{ notification.read_at|date:"F d, Y H:i" }}</span>
+                                    {% else %}
+                                    <span class="badge-warning">Unread</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Message -->
+                    <div style="margin-bottom: 24px;">
+                        <div style="color: #7fcde8; margin-bottom: 8px;">Message</div>
+                        <div style="color: #c0d6e8; line-height: 1.6; background: rgba(91, 188, 224, 0.03); padding: 16px; border-radius: 8px;">
+                            {{ notification.message|linebreaks }}
+                        </div>
+                    </div>
+                    
+                    <!-- Additional Data (if any) -->
+                    {% if notification.data %}
+                    <div style="margin-bottom: 24px;">
+                        <div style="color: #7fcde8; margin-bottom: 8px;">Additional Information</div>
+                        <div style="background: rgba(91, 188, 224, 0.05); border-radius: 8px; padding: 12px;">
+                            <pre style="color: #c0d6e8; margin: 0; font-size: 12px; white-space: pre-wrap;">{{ notification.data|pprint }}</pre>
+                        </div>
+                    </div>
+                    {% endif %}
+                    
+                    <!-- Actions -->
+                    <div class="d-flex gap-3">
+                        {% if not notification.is_read %}
+                        <button id="markReadBtn" class="btn-primary-custom">Mark as Read</button>
+                        {% endif %}
+                        <button onclick="window.location.href='{% url 'notifications:list' %}'" class="btn-github">Back</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if not notification.is_read %}
+<script>
+    document.getElementById('markReadBtn').addEventListener('click', function() {
+        fetch('{% url "notifications:mark_read" notification.id %}', {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}',
+                'Content-Type': 'application/json'
+            }
+        }).then(response => {
+            if (response.ok) {
+                window.location.href = '{% url "notifications:list" %}';
+            }
+        });
+    });
+</script>
+{% endif %}
+{% endblock %}

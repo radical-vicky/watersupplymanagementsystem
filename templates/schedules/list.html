@@ -1,0 +1,121 @@
+{% extends 'base_dashboard.html' %}
+
+{% block title %}Water Schedule · AquaFlow{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-0">
+    <!-- Header -->
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="h3 fw-semibold mb-1" style="color: #7fcde8;">Water Supply Schedule</h1>
+            <p style="color: #c0d6e8;">View your area's water distribution schedule</p>
+        </div>
+        {% if user.role == 'admin' %}
+        <div class="mt-2 mt-sm-0">
+            <a href="{% url 'schedules:create' %}" class="btn-primary-custom">+ Add Schedule</a>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Today's Schedule Highlight -->
+    {% if today_schedule %}
+    <div class="github-card mb-4" style="border-left: 4px solid #5bbce0;">
+        <div class="github-card-body">
+            <div style="color: #a8c4d8; font-size: 12px; margin-bottom: 5px;">Today's Schedule</div>
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h5 class="fw-semibold mb-1" style="color: #5bbce0;">{{ today_schedule.area_name }}</h5>
+                    <span style="color: #c0d6e8; font-size: 13px;">Zone {{ today_schedule.zone_code }}</span>
+                </div>
+                <div class="text-end">
+                    <span class="badge-info" style="font-size: 14px;">
+                        {{ today_schedule.start_time|time:"H:i" }} - {{ today_schedule.end_time|time:"H:i" }}
+                    </span>
+                    <div style="color: #a8c4d8; font-size: 12px; margin-top: 4px;">{{ today_schedule.duration_hours }} hours duration</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="github-card mb-4" style="background: rgba(231, 76, 60, 0.1); border-color: rgba(231, 76, 60, 0.3);">
+        <div class="github-card-body text-center">
+            <div style="color: #e74c3c; font-size: 14px;">⚠️ No water supply scheduled for today</div>
+            <div style="color: #a8c4d8; font-size: 12px; margin-top: 5px;">Check your area's weekly schedule below</div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Weekly Schedule Table -->
+    <div class="github-card">
+        <div class="github-card-header">
+            <h5 class="fw-semibold mb-0" style="color: #5bbce0;">Weekly Water Distribution Schedule</h5>
+        </div>
+        <div class="p-0">
+            <table class="github-table mb-0">
+                <thead>
+                    <tr>
+                        <th style="padding: 12px 16px;">Area</th>
+                        <th style="padding: 12px 16px;">Zone</th>
+                        <th style="padding: 12px 16px;">Day</th>
+                        <th style="padding: 12px 16px;">Start Time</th>
+                        <th style="padding: 12px 16px;">End Time</th>
+                        <th style="padding: 12px 16px;">Duration</th>
+                        <th style="padding: 12px 16px;">Status</th>
+                        {% if user.role == 'admin' %}
+                        <th style="padding: 12px 16px;"></th>
+                        {% endif %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for schedule in schedules %}
+                    <tr style="border-bottom: 1px solid rgba(91, 188, 224, 0.1);">
+                        <td style="padding: 12px 16px; font-weight: 500; color: #f0f6ff;">{{ schedule.area_name }}</td>
+                        <td style="padding: 12px 16px; color: #c0d6e8;">{{ schedule.zone_code }}</td>
+                        <td style="padding: 12px 16px; color: #c0d6e8;">{{ schedule.get_day_of_week_display }}</td>
+                        <td style="padding: 12px 16px; color: #5bbce0;">{{ schedule.start_time|time:"H:i" }}</td>
+                        <td style="padding: 12px 16px; color: #5bbce0;">{{ schedule.end_time|time:"H:i" }}</td>
+                        <td style="padding: 12px 16px; color: #c0d6e8;">{{ schedule.duration_hours }} hours</td>
+                        <td style="padding: 12px 16px;">
+                            {% if schedule.is_active %}
+                            <span class="badge-success">Active</span>
+                            {% else %}
+                            <span class="badge-danger">Inactive</span>
+                            {% endif %}
+                        </td>
+                        {% if user.role == 'admin' %}
+                        <td style="padding: 12px 16px;">
+                            <div class="d-flex gap-2">
+                                <a href="{% url 'schedules:edit' schedule.id %}" style="color: #5bbce0; text-decoration: none;">Edit</a>
+                                <a href="{% url 'schedules:toggle' schedule.id %}" style="color: {% if schedule.is_active %}#e74c3c{% else %}#2ecc71{% endif %}; text-decoration: none;">
+                                    {% if schedule.is_active %}Deactivate{% else %}Activate{% endif %}
+                                </a>
+                            </div>
+                        </td>
+                        {% endif %}
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="{% if user.role == 'admin' %}8{% else %}7{% endif %}" class="text-center py-4" style="color: #a8c4d8;">
+                            No schedules available
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Notes -->
+    <div class="github-card mt-4">
+        <div class="github-card-body">
+            <div style="color: #a8c4d8; font-size: 12px; margin-bottom: 8px;">Important Notes</div>
+            <ul style="color: #c0d6e8; font-size: 13px; margin-bottom: 0; padding-left: 20px;">
+                <li>Schedule times are subject to change based on maintenance requirements</li>
+                <li>In case of emergencies, check notifications for real-time updates</li>
+                <li>For any schedule changes, contact your local water provider</li>
+                <li>Save water and report any leaks immediately</li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}

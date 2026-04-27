@@ -1,0 +1,119 @@
+{% extends 'base_dashboard.html' %}
+
+{% block title %}Payment Pending · AquaFlow{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-0">
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <div class="github-card text-center">
+                <div class="github-card-body p-5">
+                    <div id="statusIcon" style="width: 80px; height: 80px; background: rgba(245, 158, 11, 0.15); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
+                        <svg class="w-10 h-10" style="color: #f39c12;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    
+                    <div id="statusMessage">
+                        <h3 class="fw-semibold mb-2" style="color: #7fcde8;">STK Push Sent!</h3>
+                        <p style="color: #c0d6e8; margin-bottom: 16px;">
+                            Please check your phone <strong style="color: #5bbce0;">{{ phone_number }}</strong>
+                        </p>
+                        <p style="color: #a8c4d8; margin-bottom: 24px;">
+                            Enter your M-Pesa PIN to complete payment.
+                        </p>
+                    </div>
+                    
+                    <div class="alert alert-info" style="background: rgba(91, 188, 224, 0.1); border: 1px solid rgba(91, 188, 224, 0.3); border-radius: 10px; padding: 12px; margin-bottom: 20px;">
+                        <small style="color: #a8c4d8;">Transaction ID: {{ payment.transaction_id }}</small>
+                    </div>
+                    
+                    <div class="d-flex gap-3 justify-center">
+                        <button id="cancelPaymentBtn" class="btn-github" style="background: rgba(231, 76, 60, 0.15); border-color: #e74c3c; color: #e74c3c;">
+                            Cancel Payment
+                        </button>
+                        <a href="{% url 'dashboard:home' %}" class="btn-github">Back to Dashboard</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let intervalId = null;
+    let isProcessing = false;
+    const transactionId = "{{ payment.transaction_id }}";
+    const csrfToken = "{{ csrf_token }}";
+    
+    const cancelBtn = document.getElementById('cancelPaymentBtn');
+    
+    // Cancel payment
+    cancelBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        if (isProcessing) return;
+        isProcessing = true;
+        
+        if (!confirm('Are you sure you want to cancel this payment?')) {
+            isProcessing = false;
+            return;
+        }
+        
+        fetch(`/payments/cancel/${transactionId}/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': csrfToken,
+                'Content-Type': 'application/json'
+            },
+            credentials: 'same-origin'
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Payment cancelled successfully!');
+                window.location.href = '/payments/';
+            } else {
+                alert(data.error || 'Failed to cancel payment');
+                isProcessing = false;
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred. Please try again.');
+            isProcessing = false;
+        });
+    });
+    
+    function checkPaymentStatus() {
+        if (isProcessing) return;
+        
+        fetch(`/payments/status/${transactionId}/`, {
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'same-origin'
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'completed') {
+                clearInterval(intervalId);
+                window.location.href = `/payments/receipt/${transactionId}/`;
+            } else if (data.status === 'cancelled' || data.status === 'failed') {
+                clearInterval(intervalId);
+                window.location.href = '/payments/';
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    }
+    
+    // Start checking status every 3 seconds
+    intervalId = setInterval(checkPaymentStatus, 3000);
+    
+    // Auto-timeout after 2 minutes
+    setTimeout(() => {
+        if (intervalId) {
+            clearInterval(intervalId);
+            window.location.reload();
+        }
+    }, 120000);
+</script>
+{% endblock %}

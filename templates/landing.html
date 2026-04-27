@@ -1,0 +1,684 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Water Supply Management System | Smart Water Supply Management System{% endblock %}
+
+{% block description %}Smart water metering, automated billing, leak detection, and real-time monitoring for efficient water management in Kenya.{% endblock %}
+
+{% block content %}
+<!-- Navigation -->
+<nav class="glass-nav fixed top-0 left-0 right-0 z-50 py-4">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center">
+            <!-- Logo -->
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-400 flex items-center justify-center">
+                    <div class="w-5 h-5 rounded-full bg-white/30"></div>
+                </div>
+                <div>
+                    <h2 class="text-xl font-bold text-white tracking-tight">Water Supply Management System</h2>
+                    <p class="text-xs text-emerald-400">Water Supply Management</p>
+                </div>
+            </div>
+
+            <!-- Desktop Navigation Links -->
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="#features" class="text-gray-300 hover:text-white transition scroll-to">Features</a>
+                <a href="#how-it-works" class="text-gray-300 hover:text-white transition scroll-to">How It Works</a>
+                <a href="#benefits" class="text-gray-300 hover:text-white transition scroll-to">Benefits</a>
+                
+                <a href="#contact" class="text-gray-300 hover:text-white transition scroll-to">Contact</a>
+            </div>
+
+            <!-- Auth Buttons -->
+            <div class="flex items-center space-x-3">
+                <a href="#auth-modal" class="text-emerald-400 hover:text-emerald-300 font-medium transition scroll-to">
+                    Sign In
+                </a>
+                <a href="#auth-modal" class="btn-primary py-2 px-5 text-sm scroll-to">
+                    Get Started
+                    <span class="ml-2">→</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- Hero Section -->
+<section class="min-h-screen flex items-center justify-center pt-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+        <div class="grid lg:grid-cols-2 gap-12 items-center">
+            <!-- Left Column - Hero Content -->
+            <div data-aos="fade-right">
+                <div class="inline-flex items-center gap-2 bg-emerald-500/20 border border-emerald-500/30 rounded-full px-4 py-1.5 mb-6">
+                    <div class="w-2 h-2 rounded-full bg-emerald-500"></div>
+                    <span class="text-emerald-400 text-sm font-medium">Smart Water Management</span>
+                </div>
+                
+                <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight mb-6">
+                    Manage Your
+                    <span class="bg-gradient-to-r from-emerald-400 to-teal-400 bg-clip-text text-transparent">Water Supply</span>
+                    Efficiently
+                </h1>
+                
+                <p class="text-gray-300 text-lg mb-8 leading-relaxed">
+                    Real-time water consumption monitoring, automated billing, 
+                    leak detection, and supply scheduling - all in one intelligent platform 
+                    designed for Kenyan households and businesses.
+                </p>
+                
+                <div class="flex flex-wrap gap-4 mb-8">
+                    <div class="flex items-center gap-2">
+                        <div class="w-10 h-10 rounded-xl bg-emerald-500/20 flex items-center justify-center">
+                            <div class="w-4 h-4 rounded-sm bg-emerald-400"></div>
+                        </div>
+                        <span class="text-gray-300">Smart Meters</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <div class="w-10 h-10 rounded-xl bg-blue-500/20 flex items-center justify-center">
+                            <div class="w-5 h-3 rounded-sm bg-blue-400"></div>
+                        </div>
+                        <span class="text-gray-300">M-Pesa Payments</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <div class="w-10 h-10 rounded-xl bg-red-500/20 flex items-center justify-center">
+                            <div class="w-4 h-5 rounded-full bg-red-400"></div>
+                        </div>
+                        <span class="text-gray-300">Leak Detection</span>
+                    </div>
+                </div>
+                
+                <div class="flex flex-wrap gap-4">
+                    <a href="#auth-modal" class="btn-primary text-lg px-8 py-4 scroll-to">
+                        Start Free Trial
+                        <span class="ml-2">→</span>
+                    </a>
+                    <a href="#features" class="btn-secondary text-lg px-8 py-4 scroll-to">
+                        Watch Demo
+                        <span class="ml-2">▶</span>
+                    </a>
+                </div>
+                
+                <!-- Dynamic Trust Indicators from Database -->
+                <div class="flex items-center gap-6 mt-8 pt-6 border-t border-white/10">
+                    <div class="flex items-center gap-2">
+                        <div class="w-4 h-4 rounded-full bg-emerald-500"></div>
+                        <span class="text-gray-400 text-sm">{{ total_users|default:"1,000+" }} Active Users</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <div class="w-4 h-4 rounded-full bg-emerald-500"></div>
+                        <span class="text-gray-400 text-sm">99.9% Uptime</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <div class="w-4 h-4 rounded-full bg-emerald-500"></div>
+                        <span class="text-gray-400 text-sm">24/7 Support</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Right Column - Auth Card -->
+            <div data-aos="fade-left" id="auth-modal">
+                <div class="glass-card p-8">
+                    <!-- Tabs -->
+                    <div class="flex border-b border-white/10 mb-6">
+                        <button id="loginTab" class="flex-1 py-3 text-center font-semibold transition-all border-b-2 border-emerald-500 text-white">
+                            Sign In
+                        </button>
+                        <button id="signupTab" class="flex-1 py-3 text-center font-semibold transition-all border-b-2 border-transparent text-gray-400 hover:text-white">
+                            Create Account
+                        </button>
+                    </div>
+                    
+                    <!-- Login Form -->
+                    <div id="loginForm">
+                        <form method="post" action="{% url 'account_login' %}">
+                            {% csrf_token %}
+                            <div class="space-y-5">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-300 mb-2">Username or Email</label>
+                                    <input type="text" name="login" class="glass-input" placeholder="Enter your username or email" required>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-300 mb-2">Password</label>
+                                    <input type="password" name="password" class="glass-input" placeholder="Enter your password" required>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <label class="flex items-center gap-2">
+                                        <input type="checkbox" name="remember" class="w-4 h-4 rounded bg-white/10 border-white/20">
+                                        <span class="text-sm text-gray-400">Remember me</span>
+                                    </label>
+                                    <a href="{% url 'account_reset_password' %}" class="text-sm text-emerald-400 hover:text-emerald-300">Forgot password?</a>
+                                </div>
+                                <button type="submit" class="btn-primary w-full">
+                                    Sign In
+                                    <span class="ml-2">→</span>
+                                </button>
+                            </div>
+                        </form>
+                        
+                        <div class="relative my-6">
+                            <div class="absolute inset-0 flex items-center">
+                                <div class="w-full border-t border-white/10"></div>
+                            </div>
+                            <div class="relative flex justify-center">
+                                <span class="px-4 bg-transparent text-gray-500 text-sm">Or continue with</span>
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-2 gap-3">
+                            <button class="btn-secondary w-full flex items-center justify-center gap-2">
+                                <div class="w-4 h-4 rounded-full bg-white/30"></div>
+                                Google
+                            </button>
+                            <button class="btn-secondary w-full flex items-center justify-center gap-2">
+                                <div class="w-4 h-4 rounded-full bg-white/30"></div>
+                                GitHub
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Signup Form -->
+                    <div id="signupForm" class="hidden">
+                        <form method="post" action="{% url 'account_signup' %}">
+                            {% csrf_token %}
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-300 mb-2">Username</label>
+                                    <input type="text" name="username" class="glass-input" placeholder="Choose a username" required>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-300 mb-2">Email Address</label>
+                                    <input type="email" name="email" class="glass-input" placeholder="Enter your email" required>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-300 mb-2">Phone Number</label>
+                                    <input type="tel" name="phone_number" class="glass-input" placeholder="+254712345678">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-300 mb-2">Password</label>
+                                    <input type="password" name="password1" class="glass-input" placeholder="Create a password" required>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-300 mb-2">Confirm Password</label>
+                                    <input type="password" name="password2" class="glass-input" placeholder="Confirm your password" required>
+                                </div>
+                                <button type="submit" class="btn-primary w-full">
+                                    Create Account
+                                    <span class="ml-2">→</span>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section id="features" class="py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12" data-aos="fade-up">
+            <div class="inline-flex items-center gap-2 bg-emerald-500/20 border border-emerald-500/30 rounded-full px-4 py-1.5 mb-4">
+                <div class="w-2 h-2 rounded-full bg-emerald-500"></div>
+                <span class="text-emerald-400 text-sm font-medium">Why Choose Water Supply Management System</span>
+            </div>
+            <h2 class="text-4xl md:text-5xl font-bold text-white mb-4">
+                Powerful Features for Modern
+                <span class="bg-gradient-to-r from-emerald-400 to-teal-400 bg-clip-text text-transparent">Water Management</span>
+            </h2>
+            <p class="text-gray-400 text-lg max-w-3xl mx-auto">
+                Everything you need to monitor, manage, and optimize your water consumption
+            </p>
+        </div>
+        
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Feature 1 -->
+            <div class="glass-card p-6" data-aos="fade-up" data-aos-delay="100">
+                <div class="w-14 h-14 rounded-xl bg-emerald-500/20 flex items-center justify-center mb-4">
+                    <div class="w-6 h-6 rounded-full border-2 border-emerald-400"></div>
+                </div>
+                <h3 class="text-xl font-bold text-white mb-2">Smart Water Meters</h3>
+                <p class="text-gray-400 leading-relaxed">IoT-enabled smart meters provide real-time water consumption data with high accuracy and automated readings.</p>
+            </div>
+            
+            <!-- Feature 2 -->
+            <div class="glass-card p-6" data-aos="fade-up" data-aos-delay="200">
+                <div class="w-14 h-14 rounded-xl bg-blue-500/20 flex items-center justify-center mb-4">
+                    <div class="w-6 h-4 rounded-sm bg-blue-400"></div>
+                </div>
+                <h3 class="text-xl font-bold text-white mb-2">M-Pesa Integration</h3>
+                <p class="text-gray-400 leading-relaxed">Pay water bills instantly via M-Pesa with automatic receipt generation and payment confirmation.</p>
+            </div>
+            
+            <!-- Feature 3 -->
+            <div class="glass-card p-6" data-aos="fade-up" data-aos-delay="300">
+                <div class="w-14 h-14 rounded-xl bg-red-500/20 flex items-center justify-center mb-4">
+                    <div class="w-5 h-6 rounded-full bg-red-400"></div>
+                </div>
+                <h3 class="text-xl font-bold text-white mb-2">Leak Detection</h3>
+                <p class="text-gray-400 leading-relaxed">Advanced algorithms detect abnormal water usage patterns and alert you to potential leaks immediately.</p>
+            </div>
+            
+            <!-- Feature 4 -->
+            <div class="glass-card p-6" data-aos="fade-up" data-aos-delay="400">
+                <div class="w-14 h-14 rounded-xl bg-purple-500/20 flex items-center justify-center mb-4">
+                    <div class="w-6 h-6 rounded-sm bg-purple-400"></div>
+                    <div class="w-4 h-4 rounded-sm bg-purple-300 absolute"></div>
+                </div>
+                <h3 class="text-xl font-bold text-white mb-2">Analytics Dashboard</h3>
+                <p class="text-gray-400 leading-relaxed">Visualize consumption trends, generate reports, and gain insights into your water usage patterns.</p>
+            </div>
+            
+            <!-- Feature 5 -->
+            <div class="glass-card p-6" data-aos="fade-up" data-aos-delay="500">
+                <div class="w-14 h-14 rounded-xl bg-yellow-500/20 flex items-center justify-center mb-4">
+                    <div class="w-6 h-6 rounded-full border-2 border-yellow-400"></div>
+                    <div class="w-3 h-3 rounded-full bg-yellow-400 absolute"></div>
+                </div>
+                <h3 class="text-xl font-bold text-white mb-2">Supply Scheduling</h3>
+                <p class="text-gray-400 leading-relaxed">Real-time water supply schedules with notifications about availability and disruptions.</p>
+            </div>
+            
+            <!-- Feature 6 -->
+            <div class="glass-card p-6" data-aos="fade-up" data-aos-delay="600">
+                <div class="w-14 h-14 rounded-xl bg-indigo-500/20 flex items-center justify-center mb-4">
+                    <div class="w-5 h-5 rounded-full border-2 border-indigo-400"></div>
+                    <div class="w-2 h-5 rounded-full bg-indigo-400 absolute"></div>
+                </div>
+                <h3 class="text-xl font-bold text-white mb-2">Smart Notifications</h3>
+                <p class="text-gray-400 leading-relaxed">Get SMS, email, and in-app alerts for bills, leaks, supply changes, and payment confirmations.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- How It Works Section -->
+<section id="how-it-works" class="py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12" data-aos="fade-up">
+            <div class="inline-flex items-center gap-2 bg-emerald-500/20 border border-emerald-500/30 rounded-full px-4 py-1.5 mb-4">
+                <div class="w-2 h-2 rounded-full bg-emerald-500"></div>
+                <span class="text-emerald-400 text-sm font-medium">Simple Process</span>
+            </div>
+            <h2 class="text-4xl md:text-5xl font-bold text-white mb-4">
+                How Water Supply Management System Works
+            </h2>
+            <p class="text-gray-400 text-lg max-w-3xl mx-auto">
+                Get started in minutes with our simple three-step process
+            </p>
+        </div>
+        
+        <div class="grid md:grid-cols-3 gap-8">
+            <div class="text-center" data-aos="fade-up" data-aos-delay="100">
+                <div class="w-20 h-20 rounded-full bg-emerald-500/20 flex items-center justify-center mx-auto mb-4 border-2 border-emerald-500/50">
+                    <span class="text-3xl font-bold text-emerald-400">1</span>
+                </div>
+                <h3 class="text-xl font-bold text-white mb-2">Sign Up</h3>
+                <p class="text-gray-400">Create your account and connect your water meter</p>
+            </div>
+            
+            <div class="text-center" data-aos="fade-up" data-aos-delay="200">
+                <div class="w-20 h-20 rounded-full bg-emerald-500/20 flex items-center justify-center mx-auto mb-4 border-2 border-emerald-500/50">
+                    <span class="text-3xl font-bold text-emerald-400">2</span>
+                </div>
+                <h3 class="text-xl font-bold text-white mb-2">Monitor Usage</h3>
+                <p class="text-gray-400">Track real-time consumption from your dashboard</p>
+            </div>
+            
+            <div class="text-center" data-aos="fade-up" data-aos-delay="300">
+                <div class="w-20 h-20 rounded-full bg-emerald-500/20 flex items-center justify-center mx-auto mb-4 border-2 border-emerald-500/50">
+                    <span class="text-3xl font-bold text-emerald-400">3</span>
+                </div>
+                <h3 class="text-xl font-bold text-white mb-2">Pay & Save</h3>
+                <p class="text-gray-400">Pay bills online and reduce water wastage</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Benefits Section with Dynamic Stats -->
+<section id="benefits" class="py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid lg:grid-cols-2 gap-12 items-center">
+            <div data-aos="fade-right">
+                <div class="inline-flex items-center gap-2 bg-emerald-500/20 border border-emerald-500/30 rounded-full px-4 py-1.5 mb-4">
+                    <div class="w-2 h-2 rounded-full bg-emerald-500"></div>
+                    <span class="text-emerald-400 text-sm font-medium">Key Benefits</span>
+                </div>
+                <h2 class="text-4xl md:text-5xl font-bold text-white mb-6">
+                    Why Switch to
+                    <span class="bg-gradient-to-r from-emerald-400 to-teal-400 bg-clip-text text-transparent">Smart Water Management</span>
+                </h2>
+                <div class="space-y-4">
+                    <div class="flex gap-3">
+                        <div class="w-6 h-6 rounded-full bg-emerald-500/20 flex items-center justify-center mt-1">
+                            <div class="w-3 h-3 rounded-full bg-emerald-500"></div>
+                        </div>
+                        <div>
+                            <h4 class="text-white font-semibold mb-1">Reduce Water Bills</h4>
+                            <p class="text-gray-400">Save up to 30% on water bills through efficient usage monitoring</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-3">
+                        <div class="w-6 h-6 rounded-full bg-emerald-500/20 flex items-center justify-center mt-1">
+                            <div class="w-3 h-3 rounded-full bg-emerald-500"></div>
+                        </div>
+                        <div>
+                            <h4 class="text-white font-semibold mb-1">Prevent Water Loss</h4>
+                            <p class="text-gray-400">Early leak detection saves thousands of liters annually</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-3">
+                        <div class="w-6 h-6 rounded-full bg-emerald-500/20 flex items-center justify-center mt-1">
+                            <div class="w-3 h-3 rounded-full bg-emerald-500"></div>
+                        </div>
+                        <div>
+                            <h4 class="text-white font-semibold mb-1">Convenient Payments</h4>
+                            <p class="text-gray-400">Pay anywhere, anytime using M-Pesa or card</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-3">
+                        <div class="w-6 h-6 rounded-full bg-emerald-500/20 flex items-center justify-center mt-1">
+                            <div class="w-3 h-3 rounded-full bg-emerald-500"></div>
+                        </div>
+                        <div>
+                            <h4 class="text-white font-semibold mb-1">Real-time Insights</h4>
+                            <p class="text-gray-400">Monitor consumption patterns and make informed decisions</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="glass-card p-8" data-aos="fade-left">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-10 h-10 rounded-xl bg-emerald-500/20 flex items-center justify-center">
+                        <div class="w-5 h-5 rounded-sm bg-emerald-400"></div>
+                    </div>
+                    <h3 class="text-xl font-bold text-white">Impact Statistics</h3>
+                </div>
+                <div class="space-y-6">
+                    <div>
+                        <div class="flex justify-between text-white mb-2">
+                            <span>Water Savings</span>
+                            <span class="text-emerald-400">{{ water_savings_percentage|default:"30" }}%</span>
+                        </div>
+                        <div class="h-2 bg-white/10 rounded-full overflow-hidden">
+                            <div class="h-full w-3/4 bg-gradient-to-r from-emerald-500 to-teal-400 rounded-full"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-white mb-2">
+                            <span>Leak Detection Rate</span>
+                            <span class="text-emerald-400">{{ leak_detection_rate|default:"95" }}%</span>
+                        </div>
+                        <div class="h-2 bg-white/10 rounded-full overflow-hidden">
+                            <div class="h-full w-[95%] bg-gradient-to-r from-emerald-500 to-teal-400 rounded-full"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-white mb-2">
+                            <span>Customer Satisfaction</span>
+                            <span class="text-emerald-400">{{ satisfaction_rate|default:"98" }}%</span>
+                        </div>
+                        <div class="h-2 bg-white/10 rounded-full overflow-hidden">
+                            <div class="h-full w-[98%] bg-gradient-to-r from-emerald-500 to-teal-400 rounded-full"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-2 gap-4 mt-8 pt-6 border-t border-white/10">
+                    <div class="text-center">
+                        <div class="text-2xl font-bold text-emerald-400">{{ total_active_meters|default:"10K" }}+</div>
+                        <div class="text-gray-400 text-sm">Active Meters</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-2xl font-bold text-emerald-400">{{ total_water_saved|default:"1M" }}+</div>
+                        <div class="text-gray-400 text-sm">Liters Saved</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+<!-- FAQ Section -->
+<section id="faq" class="py-20">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12" data-aos="fade-up">
+            <div class="inline-flex items-center gap-2 bg-emerald-500/20 border border-emerald-500/30 rounded-full px-4 py-1.5 mb-4">
+                <div class="w-2 h-2 rounded-full bg-emerald-500"></div>
+                <span class="text-emerald-400 text-sm font-medium">FAQ</span>
+            </div>
+            <h2 class="text-4xl md:text-5xl font-bold text-white mb-4">
+                Frequently Asked Questions
+            </h2>
+        </div>
+        
+        <div class="space-y-4">
+            <div class="glass-card p-6" data-aos="fade-up">
+                <h3 class="text-lg font-semibold text-white mb-2">How does the smart meter work?</h3>
+                <p class="text-gray-400">Our IoT-enabled smart meters automatically record water consumption in real-time and transmit data securely to our cloud platform for monitoring and billing.</p>
+            </div>
+            <div class="glass-card p-6" data-aos="fade-up" data-aos-delay="100">
+                <h3 class="text-lg font-semibold text-white mb-2">Can I pay via M-Pesa?</h3>
+                <p class="text-gray-400">Yes! Water Supply Management System integrates directly with M-Pesa. You can pay your water bills instantly using Lipa Na M-Pesa or M-Pesa Paybill.</p>
+            </div>
+            <div class="glass-card p-6" data-aos="fade-up" data-aos-delay="200">
+                <h3 class="text-lg font-semibold text-white mb-2">How accurate is the leak detection?</h3>
+                <p class="text-gray-400">Our leak detection algorithms have a 95% accuracy rate, identifying abnormal usage patterns and alerting you before significant water loss occurs.</p>
+            </div>
+            <div class="glass-card p-6" data-aos="fade-up" data-aos-delay="300">
+                <h3 class="text-lg font-semibold text-white mb-2">Is my data secure?</h3>
+                <p class="text-gray-400">Absolutely. We use bank-level encryption, secure data centers, and comply with Kenyan data protection regulations.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Section -->
+<section id="contact" class="py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="glass-card p-8 md:p-12" data-aos="fade-up">
+            <div class="grid lg:grid-cols-2 gap-12">
+                <div>
+                    <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Ready to Get Started?</h2>
+                    <p class="text-gray-400 mb-6">Join thousands of satisfied customers managing their water supply efficiently with Water Supply Management System.</p>
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center">
+                                <div class="w-4 h-4 rounded-sm bg-emerald-400"></div>
+                            </div>
+                            <div>
+                                <p class="text-gray-400 text-sm">Phone</p>
+                                <p class="text-white font-medium">{{ contact_phone|default:"+254 725 345 345" }}</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center">
+                                <div class="w-5 h-3 rounded-sm bg-emerald-400"></div>
+                            </div>
+                            <div>
+                                <p class="text-gray-400 text-sm">Email</p>
+                                <p class="text-white font-medium">{{ contact_email|default:"hello@Water Supply Management System.co.ke" }}</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center">
+                                <div class="w-4 h-5 rounded-full bg-emerald-400"></div>
+                            </div>
+                            <div>
+                                <p class="text-gray-400 text-sm">Location</p>
+                                <p class="text-white font-medium">{{ contact_location|default:"Nairobi, Kenya" }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <form method="post" action="{% url 'pages:contact_submit' %}" class="space-y-4">
+                        {% csrf_token %}
+                        <div>
+                            <input type="text" name="name" class="glass-input" placeholder="Your Name" required>
+                        </div>
+                        <div>
+                            <input type="email" name="email" class="glass-input" placeholder="Your Email" required>
+                        </div>
+                        <div>
+                            <input type="tel" name="phone" class="glass-input" placeholder="Your Phone Number (Optional)">
+                        </div>
+                        <div>
+                            <textarea name="message" rows="4" class="glass-input" placeholder="Your Message" required></textarea>
+                        </div>
+                        <button type="submit" class="btn-primary w-full">
+                            Send Message
+                            <span class="ml-2">→</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="py-12 border-t border-white/10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid md:grid-cols-4 gap-8">
+            <div>
+                <div class="flex items-center gap-2 mb-4">
+                    <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-emerald-500 to-teal-400"></div>
+                    <span class="text-xl font-bold text-white">Water Supply Management System</span>
+                </div>
+                <p class="text-gray-400 text-sm">{{ footer_description|default:"Smart water supply management for modern Kenya." }}</p>
+            </div>
+            <div>
+                <h4 class="text-white font-semibold mb-3">Product</h4>
+                <ul class="space-y-2 text-sm text-gray-400">
+                    <li><a href="#features" class="hover:text-emerald-400 transition scroll-to">Features</a></li>
+                    <li><a href="#pricing" class="hover:text-emerald-400 transition scroll-to">Pricing</a></li>
+                    <li><a href="#faq" class="hover:text-emerald-400 transition scroll-to">FAQ</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-white font-semibold mb-3">Company</h4>
+                <ul class="space-y-2 text-sm text-gray-400">
+                    <li><a href="#" class="hover:text-emerald-400 transition">About Us</a></li>
+                    <li><a href="#contact" class="hover:text-emerald-400 transition scroll-to">Contact</a></li>
+                    <li><a href="#" class="hover:text-emerald-400 transition">Careers</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-white font-semibold mb-3">Legal</h4>
+                <ul class="space-y-2 text-sm text-gray-400">
+                    <li><a href="#" class="hover:text-emerald-400 transition">Privacy Policy</a></li>
+                    <li><a href="#" class="hover:text-emerald-400 transition">Terms of Service</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="text-center text-gray-500 text-sm pt-8 mt-8 border-t border-white/10">
+            <p>&copy; 2024 Water Supply Management System. All rights reserved. Powered by Kayapro Technologies Limited</p>
+        </div>
+    </div>
+</footer>
+
+<!-- Messages/Alerts -->
+{% if messages %}
+    <div class="fixed top-20 right-4 z-50 space-y-2 max-w-md">
+        {% for message in messages %}
+            <div class="glass-card p-4 border-l-4 {% if message.tags == 'success' %}border-emerald-500{% elif message.tags == 'error' %}border-red-500{% else %}border-blue-500{% endif %} animate-slide-in">
+                <div class="flex items-center gap-3">
+                    {% if message.tags == 'success' %}
+                        <div class="w-5 h-5 rounded-full bg-emerald-500"></div>
+                    {% elif message.tags == 'error' %}
+                        <div class="w-5 h-5 rounded-full bg-red-500"></div>
+                    {% else %}
+                        <div class="w-5 h-5 rounded-full bg-blue-500"></div>
+                    {% endif %}
+                    <p class="text-white text-sm">{{ message }}</p>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    
+    <script>
+        setTimeout(function() {
+            const messages = document.querySelectorAll('.animate-slide-in');
+            messages.forEach(function(message) {
+                message.style.opacity = '0';
+                message.style.transform = 'translateX(100px)';
+                setTimeout(function() {
+                    if(message.remove) message.remove();
+                }, 300);
+            });
+        }, 5000);
+    </script>
+    
+    <style>
+        .animate-slide-in {
+            animation: slideIn 0.3s ease-out;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+    </style>
+{% endif %}
+
+<script>
+    // Tab switching for auth forms
+    const loginTab = document.getElementById('loginTab');
+    const signupTab = document.getElementById('signupTab');
+    const loginForm = document.getElementById('loginForm');
+    const signupForm = document.getElementById('signupForm');
+    
+    if (loginTab && signupTab) {
+        loginTab.addEventListener('click', () => {
+            loginTab.classList.add('border-emerald-500', 'text-white');
+            loginTab.classList.remove('border-transparent', 'text-gray-400');
+            signupTab.classList.remove('border-emerald-500', 'text-white');
+            signupTab.classList.add('border-transparent', 'text-gray-400');
+            loginForm.classList.remove('hidden');
+            signupForm.classList.add('hidden');
+        });
+        
+        signupTab.addEventListener('click', () => {
+            signupTab.classList.add('border-emerald-500', 'text-white');
+            signupTab.classList.remove('border-transparent', 'text-gray-400');
+            loginTab.classList.remove('border-emerald-500', 'text-white');
+            loginTab.classList.add('border-transparent', 'text-gray-400');
+            signupForm.classList.remove('hidden');
+            loginForm.classList.add('hidden');
+        });
+    }
+    
+    // Smooth scroll for anchor links
+    document.querySelectorAll('.scroll-to').forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('href');
+            if (targetId && targetId !== '#') {
+                const target = document.querySelector(targetId);
+                if (target) {
+                    const offset = 80;
+                    const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - offset;
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            }
+        });
+    });
+</script>
+{% endblock %}

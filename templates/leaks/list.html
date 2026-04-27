@@ -1,0 +1,107 @@
+{% extends 'base_dashboard.html' %}
+
+{% block title %}Leak Reports · AquaFlow{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-0">
+    <!-- Header -->
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="h3 fw-semibold mb-1" style="color: #7fcde8;">Leak Reports</h1>
+            <p style="color: #c0d6e8;">Track and report water leaks</p>
+        </div>
+        <div class="mt-2 mt-sm-0">
+            <a href="{% url 'leaks:report' %}" class="btn-primary-custom">+ Report New Leak</a>
+        </div>
+    </div>
+
+    <!-- Summary Cards -->
+    <div class="row g-3 mb-4">
+        <div class="col-md-6 col-xl-3">
+            <div class="stat-card">
+                <div style="color: #a8c4d8; font-size: 12px;">Total Reports</div>
+                <div style="font-size: 32px; font-weight: 700; color: #7fcde8;">{{ total_reports }}</div>
+                <div style="color: #c0d6e8; font-size: 13px;">All time</div>
+            </div>
+        </div>
+        <div class="col-md-6 col-xl-3">
+            <div class="stat-card">
+                <div style="color: #a8c4d8; font-size: 12px;">Active Leaks</div>
+                <div style="font-size: 32px; font-weight: 700; color: #e74c3c;">{{ active_count }}</div>
+                <div style="color: #c0d6e8; font-size: 13px;">Need attention</div>
+            </div>
+        </div>
+        <div class="col-md-6 col-xl-3">
+            <div class="stat-card">
+                <div style="color: #a8c4d8; font-size: 12px;">In Progress</div>
+                <div style="font-size: 32px; font-weight: 700; color: #f39c12;">{{ in_progress_count }}</div>
+                <div style="color: #c0d6e8; font-size: 13px;">Being fixed</div>
+            </div>
+        </div>
+        <div class="col-md-6 col-xl-3">
+            <div class="stat-card">
+                <div style="color: #a8c4d8; font-size: 12px;">Resolved</div>
+                <div style="font-size: 32px; font-weight: 700; color: #2ecc71;">{{ resolved_count }}</div>
+                <div style="color: #c0d6e8; font-size: 13px;">Completed</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Leaks Table -->
+    <div class="github-card">
+        <div class="github-card-header">
+            <h5 class="fw-semibold mb-0" style="color: #5bbce0;">Leak Reports</h5>
+        </div>
+        <div class="p-0">
+            <table class="github-table mb-0">
+                <thead>
+                    <tr>
+                        <th style="padding: 12px 16px;">Report ID</th>
+                        <th style="padding: 12px 16px;">Meter ID</th>
+                        <th style="padding: 12px 16px;">Location</th>
+                        <th style="padding: 12px 16px;">Type</th>
+                        <th style="padding: 12px 16px;">Status</th>
+                        <th style="padding: 12px 16px;">Reported Date</th>
+                        <th style="padding: 12px 16px;"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for leak in leaks %}
+                    <tr style="border-bottom: 1px solid rgba(91, 188, 224, 0.1);">
+                        <td style="padding: 12px 16px;"><code style="color: #5bbce0;">{{ leak.report_id }}</code></td>
+                        <td style="padding: 12px 16px; color: #c0d6e8;">{{ leak.meter.meter_id }}</td>
+                        <td style="padding: 12px 16px; color: #c0d6e8;">{{ leak.location|truncatechars:30 }}</td>
+                        <td style="padding: 12px 16px;">
+                            {% if leak.type == 'detected' %}
+                            <span class="badge-info">System Detected</span>
+                            {% else %}
+                            <span class="badge-warning">User Reported</span>
+                            {% endif %}
+                        </td>
+                        <td style="padding: 12px 16px;">
+                            {% if leak.status == 'resolved' %}
+                            <span class="badge-success">Resolved</span>
+                            {% elif leak.status == 'in_progress' %}
+                            <span class="badge-info">In Progress</span>
+                            {% elif leak.status == 'confirmed' %}
+                            <span class="badge-warning">Confirmed</span>
+                            {% else %}
+                            <span class="badge-danger">Detected</span>
+                            {% endif %}
+                        </td>
+                        <td style="padding: 12px 16px; color: #a8c4d8;">{{ leak.reported_at|date:"M d, Y" }}</td>
+                        <td style="padding: 12px 16px;">
+                            <a href="{% url 'leaks:detail' leak.report_id %}" style="color: #5bbce0; text-decoration: none;">View →</a>
+                        </td>
+                     </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="7" class="text-center py-4" style="color: #a8c4d8;">No leak reports found</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

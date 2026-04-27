@@ -1,0 +1,123 @@
+{% extends 'base_dashboard.html' %}
+
+{% block title %}Meter Details · {{ meter.meter_id }}{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-0">
+    <!-- Header -->
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="h3 fw-semibold mb-1" style="color: #7fcde8;">Meter Details</h1>
+            <p style="color: #c0d6e8;">{{ meter.meter_id }} - {{ meter.location }}</p>
+        </div>
+        <div class="mt-2 mt-sm-0">
+            <a href="{% url 'meters:list' %}" class="btn-github">← Back to Meters</a>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <!-- Meter Information Card -->
+        <div class="col-lg-5">
+            <div class="github-card">
+                <div class="github-card-header">
+                    <h5 class="fw-semibold mb-0" style="color: #5bbce0;">Meter Information</h5>
+                </div>
+                <div class="github-card-body">
+                    <table style="width: 100%;">
+                        <tr style="border-bottom: 1px solid rgba(91, 188, 224, 0.15);">
+                            <td style="padding: 10px 0; color: #a8c4d8;">Meter ID</td>
+                            <td style="padding: 10px 0; text-align: right; color: #f0f6ff;"><code>{{ meter.meter_id }}</code></td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(91, 188, 224, 0.15);">
+                            <td style="padding: 10px 0; color: #a8c4d8;">Location</td>
+                            <td style="padding: 10px 0; text-align: right; color: #f0f6ff;">{{ meter.location }}</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(91, 188, 224, 0.15);">
+                            <td style="padding: 10px 0; color: #a8c4d8;">Status</td>
+                            <td style="padding: 10px 0; text-align: right;"><span class="badge-success">{{ meter.get_status_display }}</span></td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(91, 188, 224, 0.15);">
+                            <td style="padding: 10px 0; color: #a8c4d8;">Installation Date</td>
+                            <td style="padding: 10px 0; text-align: right; color: #f0f6ff;">{{ meter.installation_date|date:"F d, Y" }}</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(91, 188, 224, 0.15);">
+                            <td style="padding: 10px 0; color: #a8c4d8;">Firmware Version</td>
+                            <td style="padding: 10px 0; text-align: right; color: #f0f6ff;">{{ meter.firmware_version }}</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px 0; color: #a8c4d8;">Signal Strength</td>
+                            <td style="padding: 10px 0; text-align: right; color: #f0f6ff;">{{ meter.signal_strength }} dBm</td>
+                        </tr>
+                    </table>
+                    
+                    <!-- Battery Status -->
+                    <div class="mt-4 pt-2">
+                        <div style="color: #a8c4d8; font-size: 12px; margin-bottom: 8px;">Battery Level</div>
+                        <div style="height: 8px; background: rgba(91, 188, 224, 0.2); border-radius: 4px; overflow: hidden;">
+                            <div style="width: {{ meter.battery_level }}%; height: 100%; background: #2ecc71; border-radius: 4px;"></div>
+                        </div>
+                        <div style="color: #c0d6e8; font-size: 12px; margin-top: 6px;">{{ meter.battery_level }}% remaining</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Current Reading Card -->
+        <div class="col-lg-7">
+            <div class="github-card">
+                <div class="github-card-header">
+                    <h5 class="fw-semibold mb-0" style="color: #5bbce0;">Current Reading</h5>
+                </div>
+                <div class="github-card-body text-center">
+                    <div style="font-size: 48px; font-weight: 700; color: #7fcde8;">{{ meter.last_reading|floatformat:2 }}</div>
+                    <div style="color: #a8c4d8; margin-top: 8px;">cubic meters (m³)</div>
+                    {% if meter.last_reading_date %}
+                    <div style="color: #c0d6e8; font-size: 13px; margin-top: 16px;">
+                        Last updated: {{ meter.last_reading_date|date:"F d, Y H:i" }}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reading History Card -->
+    <div class="github-card mt-4">
+        <div class="github-card-header">
+            <h5 class="fw-semibold mb-0" style="color: #5bbce0;">Reading History</h5>
+        </div>
+        <div class="p-0">
+            <table class="github-table mb-0">
+                <thead>
+                    <tr>
+                        <th style="padding: 12px 16px;">Date & Time</th>
+                        <th style="padding: 12px 16px;">Reading (m³)</th>
+                        <th style="padding: 12px 16px;">Consumption (m³)</th>
+                        <th style="padding: 12px 16px;">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for reading in readings %}
+                    <tr>
+                        <td style="padding: 12px 16px; color: #c0d6e8;">{{ reading.timestamp|date:"M d, Y H:i" }}</td>
+                        <td style="padding: 12px 16px; color: #f0f6ff;">{{ reading.reading_value|floatformat:2 }}</td>
+                        <td style="padding: 12px 16px; color: #5bbce0;">{{ reading.consumption|floatformat:2 }}</td>
+                        <td style="padding: 12px 16px;">
+                            {% if reading.consumption > 10 %}
+                            <span class="badge-warning">High Usage</span>
+                            {% else %}
+                            <span class="badge-success">Normal</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="4" class="text-center py-4" style="color: #a8c4d8;">No reading history available</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

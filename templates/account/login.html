@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+
+{% block title %}Sign In · Water Supply System{% endblock %}
+
+{% block content %}
+<div class="min-h-screen flex items-center justify-center px-4">
+    <div class="max-w-md w-full">
+        <!-- Back to Home Link -->
+        <div class="mb-4">
+            <a href="/" class="text-gray-400 hover:text-white transition inline-flex items-center gap-2">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                </svg>
+                Back to Home
+            </a>
+        </div>
+
+        <div class="text-center mb-6">
+            <h1 class="text-3xl font-bold" style="color: #7fcde8;">Welcome Back</h1>
+            <p class="text-gray-400 mt-2">Sign in to your account</p>
+        </div>
+
+        <div class="glass-card p-8" data-aos="fade-up">
+            <form method="post" action="{% url 'account_login' %}">
+                {% csrf_token %}
+                
+                <div class="mb-4">
+                    <label class="block text-gray-300 text-sm font-medium mb-2">Username or Email</label>
+                    <input type="text" name="login" class="glass-input" placeholder="Enter your username or email" required autofocus>
+                </div>
+                
+                <div class="mb-4">
+                    <label class="block text-gray-300 text-sm font-medium mb-2">Password</label>
+                    <input type="password" name="password" class="glass-input" placeholder="Enter your password" required>
+                </div>
+
+                <div class="flex items-center justify-between mb-6">
+                    <label class="flex items-center gap-2">
+                        <input type="checkbox" name="remember" class="w-4 h-4 rounded bg-white/10 border-white/20">
+                        <span class="text-sm text-gray-400">Remember me</span>
+                    </label>
+                    <a href="{% url 'account_reset_password' %}" class="text-sm text-blue-400 hover:text-blue-300 transition">
+                        Forgot password?
+                    </a>
+                </div>
+
+                {% if form.errors %}
+                    <div class="mb-4 p-3 rounded-lg bg-red-500/10 border border-red-500/30">
+                        {% for error in form.non_field_errors %}
+                            <small class="text-red-400">• {{ error }}</small><br>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                {% if redirect_field_value %}
+                    <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}">
+                {% endif %}
+
+                <button type="submit" class="btn-primary w-full">
+                    Sign In
+                    <span class="ml-2">→</span>
+                </button>
+            </form>
+
+            <div class="relative my-6">
+                <div class="absolute inset-0 flex items-center">
+                    <div class="w-full border-t border-white/10"></div>
+                </div>
+                <div class="relative flex justify-center">
+                    <span class="px-4 bg-transparent text-gray-500 text-sm">New to Water Supply System?</span>
+                </div>
+            </div>
+
+            <div class="text-center">
+                <a href="{% url 'account_signup' %}" class="btn-secondary w-full inline-block text-center">
+                    Create Account
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

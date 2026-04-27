@@ -1,0 +1,82 @@
+{% extends 'base_dashboard.html' %}
+
+{% block title %}Edit Schedule · AquaFlow{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-0">
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <!-- Header -->
+            <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
+                <div>
+                    <h1 class="h3 fw-semibold mb-1" style="color: #7fcde8;">Edit Water Schedule</h1>
+                    <p style="color: #c0d6e8;">Update schedule for {{ schedule.area_name }}</p>
+                </div>
+                <div class="mt-2 mt-sm-0">
+                    <a href="{% url 'schedules:list' %}" class="btn-github">← Back to Schedule</a>
+                </div>
+            </div>
+
+            <!-- Form Card -->
+            <div class="github-card">
+                <div class="github-card-header">
+                    <h5 class="fw-semibold mb-0" style="color: #5bbce0;">Edit Schedule Details</h5>
+                </div>
+                <div class="github-card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        
+                        <!-- Area Name -->
+                        <div class="mb-3">
+                            <label style="color: #a8c4d8; display: block; margin-bottom: 8px;">Area Name *</label>
+                            <input type="text" name="area_name" class="form-control" value="{{ schedule.area_name }}" required style="background: rgba(18, 52, 86, 0.8); border: 1px solid rgba(91, 188, 224, 0.3); color: #f0f6ff; border-radius: 8px; padding: 10px; width: 100%;">
+                        </div>
+                        
+                        <!-- Zone Code -->
+                        <div class="mb-3">
+                            <label style="color: #a8c4d8; display: block; margin-bottom: 8px;">Zone Code *</label>
+                            <input type="text" name="zone_code" class="form-control" value="{{ schedule.zone_code }}" required style="background: rgba(18, 52, 86, 0.8); border: 1px solid rgba(91, 188, 224, 0.3); color: #f0f6ff; border-radius: 8px; padding: 10px; width: 100%;">
+                        </div>
+                        
+                        <!-- Day of Week -->
+                        <div class="mb-3">
+                            <label style="color: #a8c4d8; display: block; margin-bottom: 8px;">Day of Week *</label>
+                            <select name="day_of_week" class="form-control" required style="background: rgba(18, 52, 86, 0.8); border: 1px solid rgba(91, 188, 224, 0.3); color: #f0f6ff; border-radius: 8px; padding: 10px; width: 100%;">
+                                <option value="monday" {% if schedule.day_of_week == 'monday' %}selected{% endif %}>Monday</option>
+                                <option value="tuesday" {% if schedule.day_of_week == 'tuesday' %}selected{% endif %}>Tuesday</option>
+                                <option value="wednesday" {% if schedule.day_of_week == 'wednesday' %}selected{% endif %}>Wednesday</option>
+                                <option value="thursday" {% if schedule.day_of_week == 'thursday' %}selected{% endif %}>Thursday</option>
+                                <option value="friday" {% if schedule.day_of_week == 'friday' %}selected{% endif %}>Friday</option>
+                                <option value="saturday" {% if schedule.day_of_week == 'saturday' %}selected{% endif %}>Saturday</option>
+                                <option value="sunday" {% if schedule.day_of_week == 'sunday' %}selected{% endif %}>Sunday</option>
+                            </select>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label style="color: #a8c4d8; display: block; margin-bottom: 8px;">Start Time *</label>
+                                <input type="time" name="start_time" class="form-control" value="{{ schedule.start_time|time:'H:i' }}" required style="background: rgba(18, 52, 86, 0.8); border: 1px solid rgba(91, 188, 224, 0.3); color: #f0f6ff; border-radius: 8px; padding: 10px; width: 100%;">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label style="color: #a8c4d8; display: block; margin-bottom: 8px;">End Time *</label>
+                                <input type="time" name="end_time" class="form-control" value="{{ schedule.end_time|time:'H:i' }}" required style="background: rgba(18, 52, 86, 0.8); border: 1px solid rgba(91, 188, 224, 0.3); color: #f0f6ff; border-radius: 8px; padding: 10px; width: 100%;">
+                            </div>
+                        </div>
+                        
+                        <!-- Notes -->
+                        <div class="mb-3">
+                            <label style="color: #a8c4d8; display: block; margin-bottom: 8px;">Notes</label>
+                            <textarea name="notes" rows="3" class="form-control" style="background: rgba(18, 52, 86, 0.8); border: 1px solid rgba(91, 188, 224, 0.3); color: #f0f6ff; border-radius: 8px; padding: 10px; width: 100%;">{{ schedule.notes }}</textarea>
+                        </div>
+                        
+                        <div class="d-flex gap-3 mt-4">
+                            <button type="submit" class="btn-primary-custom">Save Changes</button>
+                            <a href="{% url 'schedules:list' %}" class="btn-github">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

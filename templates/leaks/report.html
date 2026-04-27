@@ -1,0 +1,79 @@
+{% extends 'base_dashboard.html' %}
+
+{% block title %}Report Leak · AquaFlow{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-0">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <!-- Header -->
+            <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
+                <div>
+                    <h1 class="h3 fw-semibold mb-1" style="color: #7fcde8;">Report Water Leak</h1>
+                    <p style="color: #c0d6e8;">Help us identify and fix leaks quickly</p>
+                </div>
+                <div class="mt-2 mt-sm-0">
+                    <a href="{% url 'leaks:list' %}" class="btn-github">← Back to Leaks</a>
+                </div>
+            </div>
+
+            <!-- Report Form -->
+            <div class="github-card">
+                <div class="github-card-header">
+                    <h5 class="fw-semibold mb-0" style="color: #5bbce0;">Leak Details</h5>
+                </div>
+                <div class="github-card-body">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        <!-- Select Meter -->
+                        <div class="mb-4">
+                            <label style="color: #a8c4d8; display: block; margin-bottom: 8px;">Water Meter *</label>
+                            <select name="meter_id" class="form-control" required style="background: rgba(18, 52, 86, 0.8); border: 1px solid rgba(91, 188, 224, 0.3); color: #f0f6ff; border-radius: 8px; padding: 10px; width: 100%;">
+                                <option value="" style="background: #0d2742;">Select your meter</option>
+                                {% for meter in meters %}
+                                <option value="{{ meter.meter_id }}" style="background: #0d2742;">{{ meter.meter_id }} - {{ meter.location }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        
+                        <!-- Location -->
+                        <div class="mb-4">
+                            <label style="color: #a8c4d8; display: block; margin-bottom: 8px;">Leak Location *</label>
+                            <input type="text" name="location" class="form-control" placeholder="e.g., Kitchen sink, Bathroom pipe, Outside main" required style="background: rgba(18, 52, 86, 0.8); border: 1px solid rgba(91, 188, 224, 0.3); color: #f0f6ff; border-radius: 8px; padding: 10px; width: 100%;">
+                        </div>
+                        
+                        <!-- Description -->
+                        <div class="mb-4">
+                            <label style="color: #a8c4d8; display: block; margin-bottom: 8px;">Description *</label>
+                            <textarea name="description" rows="4" class="form-control" placeholder="Describe the leak issue in detail..." required style="background: rgba(18, 52, 86, 0.8); border: 1px solid rgba(91, 188, 224, 0.3); color: #f0f6ff; border-radius: 8px; padding: 10px; width: 100%;"></textarea>
+                        </div>
+                        
+                        <!-- Photo Upload -->
+                        <div class="mb-4">
+                            <label style="color: #a8c4d8; display: block; margin-bottom: 8px;">Upload Photo (Optional)</label>
+                            <input type="file" name="image" accept="image/*" class="form-control" style="background: rgba(18, 52, 86, 0.8); border: 1px solid rgba(91, 188, 224, 0.3); color: #f0f6ff; border-radius: 8px; padding: 8px;">
+                            <div style="color: #a8c4d8; font-size: 12px; margin-top: 5px;">Take a photo of the leak area (JPEG, PNG)</div>
+                        </div>
+                        
+                        <!-- Info Alert -->
+                        <div style="background: rgba(91, 188, 224, 0.1); border: 1px solid rgba(91, 188, 224, 0.2); border-radius: 8px; padding: 12px; margin-bottom: 20px;">
+                            <div style="color: #5bbce0; margin-bottom: 5px;">ℹ️ Important Information</div>
+                            <div style="color: #a8c4d8; font-size: 13px;">
+                                • Once reported, our technician will contact you within 24 hours<br>
+                                • Please provide accurate location details for faster service<br>
+                                • Take a clear photo of the leak if possible
+                            </div>
+                        </div>
+                        
+                        <!-- Submit Button -->
+                        <button type="submit" class="btn-primary-custom w-100" style="padding: 12px;">
+                            Submit Leak Report
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

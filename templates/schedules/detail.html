@@ -1,0 +1,80 @@
+{% extends 'base_dashboard.html' %}
+
+{% block title %}Schedule Details · {{ schedule.area_name }}{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-0">
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <!-- Header -->
+            <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
+                <div>
+                    <h1 class="h3 fw-semibold mb-1" style="color: #7fcde8;">Schedule Details</h1>
+                    <p style="color: #c0d6e8;">{{ schedule.area_name }} - {{ schedule.get_day_of_week_display }}</p>
+                </div>
+                <div class="mt-2 mt-sm-0">
+                    <a href="{% url 'schedules:list' %}" class="btn-github">← Back to Schedule</a>
+                </div>
+            </div>
+
+            <!-- Schedule Card -->
+            <div class="github-card">
+                <div class="github-card-header">
+                    <h5 class="fw-semibold mb-0" style="color: #5bbce0;">Water Supply Information</h5>
+                </div>
+                <div class="github-card-body">
+                    <table style="width: 100%;">
+                        <tr style="border-bottom: 1px solid rgba(91, 188, 224, 0.15);">
+                            <td style="padding: 12px 0; color: #a8c4d8; width: 40%;">Area Name</td>
+                            <td style="padding: 12px 0; color: #f0f6ff;">{{ schedule.area_name }}</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(91, 188, 224, 0.15);">
+                            <td style="padding: 12px 0; color: #a8c4d8;">Zone Code</td>
+                            <td style="padding: 12px 0; color: #f0f6ff;">{{ schedule.zone_code }}</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(91, 188, 224, 0.15);">
+                            <td style="padding: 12px 0; color: #a8c4d8;">Day of Week</td>
+                            <td style="padding: 12px 0; color: #f0f6ff;">{{ schedule.get_day_of_week_display }}</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(91, 188, 224, 0.15);">
+                            <td style="padding: 12px 0; color: #a8c4d8;">Supply Time</td>
+                            <td style="padding: 12px 0; color: #5bbce0;">{{ schedule.start_time|time:"H:i" }} - {{ schedule.end_time|time:"H:i" }}</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(91, 188, 224, 0.15);">
+                            <td style="padding: 12px 0; color: #a8c4d8;">Duration</td>
+                            <td style="padding: 12px 0; color: #f0f6ff;">{{ schedule.duration_hours }} hours</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(91, 188, 224, 0.15);">
+                            <td style="padding: 12px 0; color: #a8c4d8;">Status</td>
+                            <td style="padding: 12px 0;">
+                                {% if schedule.is_active %}
+                                <span class="badge-success">Active</span>
+                                {% else %}
+                                <span class="badge-danger">Inactive</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% if schedule.notes %}
+                        <tr>
+                            <td style="padding: 12px 0; color: #a8c4d8;">Notes</td>
+                            <td style="padding: 12px 0; color: #c0d6e8;">{{ schedule.notes|linebreaks }}</td>
+                        </tr>
+                        {% endif %}
+                    </table>
+                    
+                    {% if user.role == 'admin' %}
+                    <div class="mt-4 pt-3 border-top" style="border-color: rgba(91, 188, 224, 0.2);">
+                        <div class="d-flex gap-3">
+                            <a href="{% url 'schedules:edit' schedule.id %}" class="btn-primary-custom">Edit Schedule</a>
+                            <a href="{% url 'schedules:toggle' schedule.id %}" class="btn-github" style="background: {% if schedule.is_active %}#e74c3c{% else %}#2ecc71{% endif %}; color: white;">
+                                {% if schedule.is_active %}Deactivate{% else %}Activate{% endif %}
+                            </a>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
