@@ -7,17 +7,18 @@
 
 {% block content %}
 <!-- Navigation -->
-<nav class="glass-nav fixed top-0 left-0 right-0 z-50 py-4">
+<nav class="glass-nav fixed top-0 left-0 right-0 z-50 py-3 md:py-4">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center">
             <!-- Logo -->
-            <div class="flex items-center space-x-3">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-400 flex items-center justify-center">
-                    <div class="w-5 h-5 rounded-full bg-white/30"></div>
+            <div class="flex items-center space-x-2 md:space-x-3">
+                <div class="w-8 h-8 md:w-10 md:h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-400 flex items-center justify-center">
+                    <div class="w-4 h-4 md:w-5 md:h-5 rounded-full bg-white/30"></div>
                 </div>
                 <div>
-                    <h2 class="text-xl font-bold text-white tracking-tight">Water Supply Management System</h2>
-                    <p class="text-xs text-emerald-400">Water Supply Management</p>
+                    <h2 class="text-base md:text-xl font-bold text-white tracking-tight hidden xs:block">Water Supply Management System</h2>
+                    <h2 class="text-base md:text-xl font-bold text-white tracking-tight xs:hidden">WSMS</h2>
+                    <p class="text-xs text-emerald-400 hidden sm:block">Water Supply Management</p>
                 </div>
             </div>
 
@@ -26,105 +27,125 @@
                 <a href="#features" class="text-gray-300 hover:text-white transition scroll-to">Features</a>
                 <a href="#how-it-works" class="text-gray-300 hover:text-white transition scroll-to">How It Works</a>
                 <a href="#benefits" class="text-gray-300 hover:text-white transition scroll-to">Benefits</a>
-                
                 <a href="#contact" class="text-gray-300 hover:text-white transition scroll-to">Contact</a>
             </div>
 
+            <!-- Mobile Menu Button -->
+            <button id="mobileMenuButton" class="md:hidden text-white p-2">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+
             <!-- Auth Buttons -->
-            <div class="flex items-center space-x-3">
-                <a href="#auth-modal" class="text-emerald-400 hover:text-emerald-300 font-medium transition scroll-to">
+            <div class="hidden md:flex items-center space-x-3">
+                <a href="#auth-modal" class="text-emerald-400 hover:text-emerald-300 font-medium transition scroll-to text-sm lg:text-base">
                     Sign In
                 </a>
-                <a href="#auth-modal" class="btn-primary py-2 px-5 text-sm scroll-to">
+                <a href="#auth-modal" class="btn-primary py-2 px-4 lg:px-5 text-sm scroll-to">
                     Get Started
                     <span class="ml-2">→</span>
                 </a>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobileMenu" class="hidden md:hidden mt-4 pb-4">
+            <div class="flex flex-col space-y-3">
+                <a href="#features" class="text-gray-300 hover:text-white transition scroll-to py-2">Features</a>
+                <a href="#how-it-works" class="text-gray-300 hover:text-white transition scroll-to py-2">How It Works</a>
+                <a href="#benefits" class="text-gray-300 hover:text-white transition scroll-to py-2">Benefits</a>
+                <a href="#contact" class="text-gray-300 hover:text-white transition scroll-to py-2">Contact</a>
+                <div class="flex flex-col space-y-2 pt-2">
+                    <a href="#auth-modal" class="text-emerald-400 hover:text-emerald-300 font-medium transition scroll-to py-2 text-center">Sign In</a>
+                    <a href="#auth-modal" class="btn-primary text-center py-2 scroll-to">Get Started →</a>
+                </div>
             </div>
         </div>
     </div>
 </nav>
 
 <!-- Hero Section -->
-<section class="min-h-screen flex items-center justify-center pt-20">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        <div class="grid lg:grid-cols-2 gap-12 items-center">
+<section class="min-h-screen flex items-center justify-center pt-16 md:pt-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-20">
+        <div class="grid lg:grid-cols-2 gap-8 md:gap-12 items-center">
             <!-- Left Column - Hero Content -->
-            <div data-aos="fade-right">
-                <div class="inline-flex items-center gap-2 bg-emerald-500/20 border border-emerald-500/30 rounded-full px-4 py-1.5 mb-6">
+            <div data-aos="fade-right" class="order-2 lg:order-1">
+                <div class="inline-flex items-center gap-2 bg-emerald-500/20 border border-emerald-500/30 rounded-full px-3 py-1 md:px-4 md:py-1.5 mb-4 md:mb-6">
                     <div class="w-2 h-2 rounded-full bg-emerald-500"></div>
-                    <span class="text-emerald-400 text-sm font-medium">Smart Water Management</span>
+                    <span class="text-emerald-400 text-xs md:text-sm font-medium">Smart Water Management</span>
                 </div>
                 
-                <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight mb-6">
+                <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white leading-tight mb-4 md:mb-6">
                     Manage Your
                     <span class="bg-gradient-to-r from-emerald-400 to-teal-400 bg-clip-text text-transparent">Water Supply</span>
                     Efficiently
                 </h1>
                 
-                <p class="text-gray-300 text-lg mb-8 leading-relaxed">
+                <p class="text-gray-300 text-base md:text-lg mb-6 md:mb-8 leading-relaxed">
                     Real-time water consumption monitoring, automated billing, 
                     leak detection, and supply scheduling - all in one intelligent platform 
                     designed for Kenyan households and businesses.
                 </p>
                 
-                <div class="flex flex-wrap gap-4 mb-8">
+                <div class="flex flex-wrap gap-3 md:gap-4 mb-6 md:mb-8">
                     <div class="flex items-center gap-2">
-                        <div class="w-10 h-10 rounded-xl bg-emerald-500/20 flex items-center justify-center">
-                            <div class="w-4 h-4 rounded-sm bg-emerald-400"></div>
+                        <div class="w-8 h-8 md:w-10 md:h-10 rounded-xl bg-emerald-500/20 flex items-center justify-center">
+                            <div class="w-3 h-3 md:w-4 md:h-4 rounded-sm bg-emerald-400"></div>
                         </div>
-                        <span class="text-gray-300">Smart Meters</span>
+                        <span class="text-gray-300 text-sm md:text-base">Smart Meters</span>
                     </div>
                     <div class="flex items-center gap-2">
-                        <div class="w-10 h-10 rounded-xl bg-blue-500/20 flex items-center justify-center">
-                            <div class="w-5 h-3 rounded-sm bg-blue-400"></div>
+                        <div class="w-8 h-8 md:w-10 md:h-10 rounded-xl bg-blue-500/20 flex items-center justify-center">
+                            <div class="w-4 h-2 md:w-5 md:h-3 rounded-sm bg-blue-400"></div>
                         </div>
-                        <span class="text-gray-300">M-Pesa Payments</span>
+                        <span class="text-gray-300 text-sm md:text-base">M-Pesa Payments</span>
                     </div>
                     <div class="flex items-center gap-2">
-                        <div class="w-10 h-10 rounded-xl bg-red-500/20 flex items-center justify-center">
-                            <div class="w-4 h-5 rounded-full bg-red-400"></div>
+                        <div class="w-8 h-8 md:w-10 md:h-10 rounded-xl bg-red-500/20 flex items-center justify-center">
+                            <div class="w-3 h-4 md:w-4 md:h-5 rounded-full bg-red-400"></div>
                         </div>
-                        <span class="text-gray-300">Leak Detection</span>
+                        <span class="text-gray-300 text-sm md:text-base">Leak Detection</span>
                     </div>
                 </div>
                 
-                <div class="flex flex-wrap gap-4">
-                    <a href="#auth-modal" class="btn-primary text-lg px-8 py-4 scroll-to">
+                <div class="flex flex-wrap gap-3 md:gap-4">
+                    <a href="#auth-modal" class="btn-primary text-sm md:text-lg px-6 py-3 md:px-8 md:py-4 scroll-to">
                         Start Free Trial
                         <span class="ml-2">→</span>
                     </a>
-                    <a href="#features" class="btn-secondary text-lg px-8 py-4 scroll-to">
+                    <a href="#features" class="btn-secondary text-sm md:text-lg px-6 py-3 md:px-8 md:py-4 scroll-to">
                         Watch Demo
                         <span class="ml-2">▶</span>
                     </a>
                 </div>
                 
                 <!-- Dynamic Trust Indicators from Database -->
-                <div class="flex items-center gap-6 mt-8 pt-6 border-t border-white/10">
+                <div class="flex flex-wrap items-center gap-4 md:gap-6 mt-6 md:mt-8 pt-6 border-t border-white/10">
                     <div class="flex items-center gap-2">
-                        <div class="w-4 h-4 rounded-full bg-emerald-500"></div>
-                        <span class="text-gray-400 text-sm">{{ total_users|default:"1,000+" }} Active Users</span>
+                        <div class="w-3 h-3 md:w-4 md:h-4 rounded-full bg-emerald-500"></div>
+                        <span class="text-gray-400 text-xs md:text-sm">{{ total_users|default:"1,000+" }} Active Users</span>
                     </div>
                     <div class="flex items-center gap-2">
-                        <div class="w-4 h-4 rounded-full bg-emerald-500"></div>
-                        <span class="text-gray-400 text-sm">99.9% Uptime</span>
+                        <div class="w-3 h-3 md:w-4 md:h-4 rounded-full bg-emerald-500"></div>
+                        <span class="text-gray-400 text-xs md:text-sm">99.9% Uptime</span>
                     </div>
                     <div class="flex items-center gap-2">
-                        <div class="w-4 h-4 rounded-full bg-emerald-500"></div>
-                        <span class="text-gray-400 text-sm">24/7 Support</span>
+                        <div class="w-3 h-3 md:w-4 md:h-4 rounded-full bg-emerald-500"></div>
+                        <span class="text-gray-400 text-xs md:text-sm">24/7 Support</span>
                     </div>
                 </div>
             </div>
             
             <!-- Right Column - Auth Card -->
-            <div data-aos="fade-left" id="auth-modal">
-                <div class="glass-card p-8">
+            <div data-aos="fade-left" id="auth-modal" class="order-1 lg:order-2">
+                <div class="glass-card p-6 md:p-8">
                     <!-- Tabs -->
                     <div class="flex border-b border-white/10 mb-6">
-                        <button id="loginTab" class="flex-1 py-3 text-center font-semibold transition-all border-b-2 border-emerald-500 text-white">
+                        <button id="loginTab" class="flex-1 py-2 md:py-3 text-sm md:text-base text-center font-semibold transition-all border-b-2 border-emerald-500 text-white">
                             Sign In
                         </button>
-                        <button id="signupTab" class="flex-1 py-3 text-center font-semibold transition-all border-b-2 border-transparent text-gray-400 hover:text-white">
+                        <button id="signupTab" class="flex-1 py-2 md:py-3 text-sm md:text-base text-center font-semibold transition-all border-b-2 border-transparent text-gray-400 hover:text-white">
                             Create Account
                         </button>
                     </div>
@@ -133,23 +154,23 @@
                     <div id="loginForm">
                         <form method="post" action="{% url 'account_login' %}">
                             {% csrf_token %}
-                            <div class="space-y-5">
+                            <div class="space-y-4 md:space-y-5">
                                 <div>
                                     <label class="block text-sm font-medium text-gray-300 mb-2">Username or Email</label>
-                                    <input type="text" name="login" class="glass-input" placeholder="Enter your username or email" required>
+                                    <input type="text" name="login" class="glass-input w-full" placeholder="Enter your username or email" required>
                                 </div>
                                 <div>
                                     <label class="block text-sm font-medium text-gray-300 mb-2">Password</label>
-                                    <input type="password" name="password" class="glass-input" placeholder="Enter your password" required>
+                                    <input type="password" name="password" class="glass-input w-full" placeholder="Enter your password" required>
                                 </div>
-                                <div class="flex items-center justify-between">
+                                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
                                     <label class="flex items-center gap-2">
                                         <input type="checkbox" name="remember" class="w-4 h-4 rounded bg-white/10 border-white/20">
-                                        <span class="text-sm text-gray-400">Remember me</span>
+                                        <span class="text-xs md:text-sm text-gray-400">Remember me</span>
                                     </label>
-                                    <a href="{% url 'account_reset_password' %}" class="text-sm text-emerald-400 hover:text-emerald-300">Forgot password?</a>
+                                    <a href="{% url 'account_reset_password' %}" class="text-xs md:text-sm text-emerald-400 hover:text-emerald-300">Forgot password?</a>
                                 </div>
-                                <button type="submit" class="btn-primary w-full">
+                                <button type="submit" class="btn-primary w-full py-2 md:py-3 text-sm md:text-base">
                                     Sign In
                                     <span class="ml-2">→</span>
                                 </button>
@@ -161,17 +182,24 @@
                                 <div class="w-full border-t border-white/10"></div>
                             </div>
                             <div class="relative flex justify-center">
-                                <span class="px-4 bg-transparent text-gray-500 text-sm">Or continue with</span>
+                                <span class="px-4 bg-transparent text-gray-500 text-xs md:text-sm">Or continue with</span>
                             </div>
                         </div>
                         
                         <div class="grid grid-cols-2 gap-3">
-                            <button class="btn-secondary w-full flex items-center justify-center gap-2">
-                                <div class="w-4 h-4 rounded-full bg-white/30"></div>
+                            <button class="btn-secondary w-full py-2 md:py-3 text-sm md:text-base flex items-center justify-center gap-2">
+                                <svg class="w-4 h-4" viewBox="0 0 24 24">
+                                    <path fill="currentColor" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                                    <path fill="currentColor" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                                    <path fill="currentColor" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                                    <path fill="currentColor" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                                </svg>
                                 Google
                             </button>
-                            <button class="btn-secondary w-full flex items-center justify-center gap-2">
-                                <div class="w-4 h-4 rounded-full bg-white/30"></div>
+                            <button class="btn-secondary w-full py-2 md:py-3 text-sm md:text-base flex items-center justify-center gap-2">
+                                <svg class="w-4 h-4" viewBox="0 0 24 24">
+                                    <path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12c0 4.42 2.87 8.17 6.84 9.49.5.09.68-.22.68-.48 0-.24-.01-.88-.01-1.73-2.78.6-3.37-1.34-3.37-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.89 1.52 2.34 1.08 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.26.1-2.62 0 0 .84-.27 2.75 1.02.8-.22 1.65-.33 2.5-.33.85 0 1.7.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.36.2 2.37.1 2.62.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85 0 1.34-.01 2.42-.01 2.75 0 .27.18.58.69.48C19.13 20.17 22 16.42 22 12c0-5.52-4.48-10-10-10z"/>
+                                </svg>
                                 GitHub
                             </button>
                         </div>
@@ -181,28 +209,28 @@
                     <div id="signupForm" class="hidden">
                         <form method="post" action="{% url 'account_signup' %}">
                             {% csrf_token %}
-                            <div class="space-y-4">
+                            <div class="space-y-3 md:space-y-4">
                                 <div>
                                     <label class="block text-sm font-medium text-gray-300 mb-2">Username</label>
-                                    <input type="text" name="username" class="glass-input" placeholder="Choose a username" required>
+                                    <input type="text" name="username" class="glass-input w-full" placeholder="Choose a username" required>
                                 </div>
                                 <div>
                                     <label class="block text-sm font-medium text-gray-300 mb-2">Email Address</label>
-                                    <input type="email" name="email" class="glass-input" placeholder="Enter your email" required>
+                                    <input type="email" name="email" class="glass-input w-full" placeholder="Enter your email" required>
                                 </div>
                                 <div>
                                     <label class="block text-sm font-medium text-gray-300 mb-2">Phone Number</label>
-                                    <input type="tel" name="phone_number" class="glass-input" placeholder="+254712345678">
+                                    <input type="tel" name="phone_number" class="glass-input w-full" placeholder="+254712345678">
                                 </div>
                                 <div>
                                     <label class="block text-sm font-medium text-gray-300 mb-2">Password</label>
-                                    <input type="password" name="password1" class="glass-input" placeholder="Create a password" required>
+                                    <input type="password" name="password1" class="glass-input w-full" placeholder="Create a password" required>
                                 </div>
                                 <div>
                                     <label class="block text-sm font-medium text-gray-300 mb-2">Confirm Password</label>
-                                    <input type="password" name="password2" class="glass-input" placeholder="Confirm your password" required>
+                                    <input type="password" name="password2" class="glass-input w-full" placeholder="Confirm your password" required>
                                 </div>
-                                <button type="submit" class="btn-primary w-full">
+                                <button type="submit" class="btn-primary w-full py-2 md:py-3 text-sm md:text-base">
                                     Create Account
                                     <span class="ml-2">→</span>
                                 </button>
@@ -216,190 +244,187 @@
 </section>
 
 <!-- Features Section -->
-<section id="features" class="py-20">
+<section id="features" class="py-12 md:py-20">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-12" data-aos="fade-up">
-            <div class="inline-flex items-center gap-2 bg-emerald-500/20 border border-emerald-500/30 rounded-full px-4 py-1.5 mb-4">
+        <div class="text-center mb-8 md:mb-12" data-aos="fade-up">
+            <div class="inline-flex items-center gap-2 bg-emerald-500/20 border border-emerald-500/30 rounded-full px-3 py-1 md:px-4 md:py-1.5 mb-4">
                 <div class="w-2 h-2 rounded-full bg-emerald-500"></div>
-                <span class="text-emerald-400 text-sm font-medium">Why Choose Water Supply Management System</span>
+                <span class="text-emerald-400 text-xs md:text-sm font-medium">Why Choose Water Supply Management System</span>
             </div>
-            <h2 class="text-4xl md:text-5xl font-bold text-white mb-4">
+            <h2 class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-3 md:mb-4">
                 Powerful Features for Modern
                 <span class="bg-gradient-to-r from-emerald-400 to-teal-400 bg-clip-text text-transparent">Water Management</span>
             </h2>
-            <p class="text-gray-400 text-lg max-w-3xl mx-auto">
+            <p class="text-gray-400 text-base md:text-lg max-w-3xl mx-auto px-4">
                 Everything you need to monitor, manage, and optimize your water consumption
             </p>
         </div>
         
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
             <!-- Feature 1 -->
-            <div class="glass-card p-6" data-aos="fade-up" data-aos-delay="100">
-                <div class="w-14 h-14 rounded-xl bg-emerald-500/20 flex items-center justify-center mb-4">
-                    <div class="w-6 h-6 rounded-full border-2 border-emerald-400"></div>
+            <div class="glass-card p-5 md:p-6" data-aos="fade-up" data-aos-delay="100">
+                <div class="w-12 h-12 md:w-14 md:h-14 rounded-xl bg-emerald-500/20 flex items-center justify-center mb-3 md:mb-4">
+                    <div class="w-5 h-5 md:w-6 md:h-6 rounded-full border-2 border-emerald-400"></div>
                 </div>
-                <h3 class="text-xl font-bold text-white mb-2">Smart Water Meters</h3>
-                <p class="text-gray-400 leading-relaxed">IoT-enabled smart meters provide real-time water consumption data with high accuracy and automated readings.</p>
+                <h3 class="text-lg md:text-xl font-bold text-white mb-2">Smart Water Meters</h3>
+                <p class="text-gray-400 text-sm md:text-base leading-relaxed">IoT-enabled smart meters provide real-time water consumption data with high accuracy.</p>
             </div>
             
             <!-- Feature 2 -->
-            <div class="glass-card p-6" data-aos="fade-up" data-aos-delay="200">
-                <div class="w-14 h-14 rounded-xl bg-blue-500/20 flex items-center justify-center mb-4">
-                    <div class="w-6 h-4 rounded-sm bg-blue-400"></div>
+            <div class="glass-card p-5 md:p-6" data-aos="fade-up" data-aos-delay="200">
+                <div class="w-12 h-12 md:w-14 md:h-14 rounded-xl bg-blue-500/20 flex items-center justify-center mb-3 md:mb-4">
+                    <div class="w-5 h-3 md:w-6 md:h-4 rounded-sm bg-blue-400"></div>
                 </div>
-                <h3 class="text-xl font-bold text-white mb-2">M-Pesa Integration</h3>
-                <p class="text-gray-400 leading-relaxed">Pay water bills instantly via M-Pesa with automatic receipt generation and payment confirmation.</p>
+                <h3 class="text-lg md:text-xl font-bold text-white mb-2">M-Pesa Integration</h3>
+                <p class="text-gray-400 text-sm md:text-base leading-relaxed">Pay water bills instantly via M-Pesa with automatic receipt generation.</p>
             </div>
             
             <!-- Feature 3 -->
-            <div class="glass-card p-6" data-aos="fade-up" data-aos-delay="300">
-                <div class="w-14 h-14 rounded-xl bg-red-500/20 flex items-center justify-center mb-4">
-                    <div class="w-5 h-6 rounded-full bg-red-400"></div>
+            <div class="glass-card p-5 md:p-6" data-aos="fade-up" data-aos-delay="300">
+                <div class="w-12 h-12 md:w-14 md:h-14 rounded-xl bg-red-500/20 flex items-center justify-center mb-3 md:mb-4">
+                    <div class="w-4 h-5 md:w-5 md:h-6 rounded-full bg-red-400"></div>
                 </div>
-                <h3 class="text-xl font-bold text-white mb-2">Leak Detection</h3>
-                <p class="text-gray-400 leading-relaxed">Advanced algorithms detect abnormal water usage patterns and alert you to potential leaks immediately.</p>
+                <h3 class="text-lg md:text-xl font-bold text-white mb-2">Leak Detection</h3>
+                <p class="text-gray-400 text-sm md:text-base leading-relaxed">Advanced algorithms detect abnormal usage patterns and alert you immediately.</p>
             </div>
             
             <!-- Feature 4 -->
-            <div class="glass-card p-6" data-aos="fade-up" data-aos-delay="400">
-                <div class="w-14 h-14 rounded-xl bg-purple-500/20 flex items-center justify-center mb-4">
-                    <div class="w-6 h-6 rounded-sm bg-purple-400"></div>
-                    <div class="w-4 h-4 rounded-sm bg-purple-300 absolute"></div>
+            <div class="glass-card p-5 md:p-6" data-aos="fade-up" data-aos-delay="400">
+                <div class="w-12 h-12 md:w-14 md:h-14 rounded-xl bg-purple-500/20 flex items-center justify-center mb-3 md:mb-4">
+                    <div class="w-5 h-5 md:w-6 md:h-6 rounded-sm bg-purple-400"></div>
                 </div>
-                <h3 class="text-xl font-bold text-white mb-2">Analytics Dashboard</h3>
-                <p class="text-gray-400 leading-relaxed">Visualize consumption trends, generate reports, and gain insights into your water usage patterns.</p>
+                <h3 class="text-lg md:text-xl font-bold text-white mb-2">Analytics Dashboard</h3>
+                <p class="text-gray-400 text-sm md:text-base leading-relaxed">Visualize consumption trends and gain insights into usage patterns.</p>
             </div>
             
             <!-- Feature 5 -->
-            <div class="glass-card p-6" data-aos="fade-up" data-aos-delay="500">
-                <div class="w-14 h-14 rounded-xl bg-yellow-500/20 flex items-center justify-center mb-4">
-                    <div class="w-6 h-6 rounded-full border-2 border-yellow-400"></div>
-                    <div class="w-3 h-3 rounded-full bg-yellow-400 absolute"></div>
+            <div class="glass-card p-5 md:p-6" data-aos="fade-up" data-aos-delay="500">
+                <div class="w-12 h-12 md:w-14 md:h-14 rounded-xl bg-yellow-500/20 flex items-center justify-center mb-3 md:mb-4">
+                    <div class="w-5 h-5 md:w-6 md:h-6 rounded-full border-2 border-yellow-400"></div>
                 </div>
-                <h3 class="text-xl font-bold text-white mb-2">Supply Scheduling</h3>
-                <p class="text-gray-400 leading-relaxed">Real-time water supply schedules with notifications about availability and disruptions.</p>
+                <h3 class="text-lg md:text-xl font-bold text-white mb-2">Supply Scheduling</h3>
+                <p class="text-gray-400 text-sm md:text-base leading-relaxed">Real-time water supply schedules with notifications about disruptions.</p>
             </div>
             
             <!-- Feature 6 -->
-            <div class="glass-card p-6" data-aos="fade-up" data-aos-delay="600">
-                <div class="w-14 h-14 rounded-xl bg-indigo-500/20 flex items-center justify-center mb-4">
-                    <div class="w-5 h-5 rounded-full border-2 border-indigo-400"></div>
-                    <div class="w-2 h-5 rounded-full bg-indigo-400 absolute"></div>
+            <div class="glass-card p-5 md:p-6" data-aos="fade-up" data-aos-delay="600">
+                <div class="w-12 h-12 md:w-14 md:h-14 rounded-xl bg-indigo-500/20 flex items-center justify-center mb-3 md:mb-4">
+                    <div class="w-4 h-5 md:w-5 md:h-6 rounded-full border-2 border-indigo-400"></div>
                 </div>
-                <h3 class="text-xl font-bold text-white mb-2">Smart Notifications</h3>
-                <p class="text-gray-400 leading-relaxed">Get SMS, email, and in-app alerts for bills, leaks, supply changes, and payment confirmations.</p>
+                <h3 class="text-lg md:text-xl font-bold text-white mb-2">Smart Notifications</h3>
+                <p class="text-gray-400 text-sm md:text-base leading-relaxed">Get SMS, email, and in-app alerts for bills, leaks, and payments.</p>
             </div>
         </div>
     </div>
 </section>
 
 <!-- How It Works Section -->
-<section id="how-it-works" class="py-20">
+<section id="how-it-works" class="py-12 md:py-20">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-12" data-aos="fade-up">
-            <div class="inline-flex items-center gap-2 bg-emerald-500/20 border border-emerald-500/30 rounded-full px-4 py-1.5 mb-4">
+        <div class="text-center mb-8 md:mb-12" data-aos="fade-up">
+            <div class="inline-flex items-center gap-2 bg-emerald-500/20 border border-emerald-500/30 rounded-full px-3 py-1 md:px-4 md:py-1.5 mb-4">
                 <div class="w-2 h-2 rounded-full bg-emerald-500"></div>
-                <span class="text-emerald-400 text-sm font-medium">Simple Process</span>
+                <span class="text-emerald-400 text-xs md:text-sm font-medium">Simple Process</span>
             </div>
-            <h2 class="text-4xl md:text-5xl font-bold text-white mb-4">
+            <h2 class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-3 md:mb-4">
                 How Water Supply Management System Works
             </h2>
-            <p class="text-gray-400 text-lg max-w-3xl mx-auto">
+            <p class="text-gray-400 text-base md:text-lg max-w-3xl mx-auto px-4">
                 Get started in minutes with our simple three-step process
             </p>
         </div>
         
-        <div class="grid md:grid-cols-3 gap-8">
+        <div class="grid md:grid-cols-3 gap-6 md:gap-8">
             <div class="text-center" data-aos="fade-up" data-aos-delay="100">
-                <div class="w-20 h-20 rounded-full bg-emerald-500/20 flex items-center justify-center mx-auto mb-4 border-2 border-emerald-500/50">
-                    <span class="text-3xl font-bold text-emerald-400">1</span>
+                <div class="w-16 h-16 md:w-20 md:h-20 rounded-full bg-emerald-500/20 flex items-center justify-center mx-auto mb-3 md:mb-4 border-2 border-emerald-500/50">
+                    <span class="text-2xl md:text-3xl font-bold text-emerald-400">1</span>
                 </div>
-                <h3 class="text-xl font-bold text-white mb-2">Sign Up</h3>
-                <p class="text-gray-400">Create your account and connect your water meter</p>
+                <h3 class="text-lg md:text-xl font-bold text-white mb-2">Sign Up</h3>
+                <p class="text-gray-400 text-sm md:text-base">Create your account and connect your water meter</p>
             </div>
             
             <div class="text-center" data-aos="fade-up" data-aos-delay="200">
-                <div class="w-20 h-20 rounded-full bg-emerald-500/20 flex items-center justify-center mx-auto mb-4 border-2 border-emerald-500/50">
-                    <span class="text-3xl font-bold text-emerald-400">2</span>
+                <div class="w-16 h-16 md:w-20 md:h-20 rounded-full bg-emerald-500/20 flex items-center justify-center mx-auto mb-3 md:mb-4 border-2 border-emerald-500/50">
+                    <span class="text-2xl md:text-3xl font-bold text-emerald-400">2</span>
                 </div>
-                <h3 class="text-xl font-bold text-white mb-2">Monitor Usage</h3>
-                <p class="text-gray-400">Track real-time consumption from your dashboard</p>
+                <h3 class="text-lg md:text-xl font-bold text-white mb-2">Monitor Usage</h3>
+                <p class="text-gray-400 text-sm md:text-base">Track real-time consumption from your dashboard</p>
             </div>
             
             <div class="text-center" data-aos="fade-up" data-aos-delay="300">
-                <div class="w-20 h-20 rounded-full bg-emerald-500/20 flex items-center justify-center mx-auto mb-4 border-2 border-emerald-500/50">
-                    <span class="text-3xl font-bold text-emerald-400">3</span>
+                <div class="w-16 h-16 md:w-20 md:h-20 rounded-full bg-emerald-500/20 flex items-center justify-center mx-auto mb-3 md:mb-4 border-2 border-emerald-500/50">
+                    <span class="text-2xl md:text-3xl font-bold text-emerald-400">3</span>
                 </div>
-                <h3 class="text-xl font-bold text-white mb-2">Pay & Save</h3>
-                <p class="text-gray-400">Pay bills online and reduce water wastage</p>
+                <h3 class="text-lg md:text-xl font-bold text-white mb-2">Pay & Save</h3>
+                <p class="text-gray-400 text-sm md:text-base">Pay bills online and reduce water wastage</p>
             </div>
         </div>
     </div>
 </section>
 
 <!-- Benefits Section with Dynamic Stats -->
-<section id="benefits" class="py-20">
+<section id="benefits" class="py-12 md:py-20">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid lg:grid-cols-2 gap-12 items-center">
-            <div data-aos="fade-right">
-                <div class="inline-flex items-center gap-2 bg-emerald-500/20 border border-emerald-500/30 rounded-full px-4 py-1.5 mb-4">
+        <div class="grid lg:grid-cols-2 gap-8 md:gap-12 items-center">
+            <div data-aos="fade-right" class="order-2 lg:order-1">
+                <div class="inline-flex items-center gap-2 bg-emerald-500/20 border border-emerald-500/30 rounded-full px-3 py-1 md:px-4 md:py-1.5 mb-4">
                     <div class="w-2 h-2 rounded-full bg-emerald-500"></div>
-                    <span class="text-emerald-400 text-sm font-medium">Key Benefits</span>
+                    <span class="text-emerald-400 text-xs md:text-sm font-medium">Key Benefits</span>
                 </div>
-                <h2 class="text-4xl md:text-5xl font-bold text-white mb-6">
+                <h2 class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 md:mb-6">
                     Why Switch to
                     <span class="bg-gradient-to-r from-emerald-400 to-teal-400 bg-clip-text text-transparent">Smart Water Management</span>
                 </h2>
                 <div class="space-y-4">
                     <div class="flex gap-3">
-                        <div class="w-6 h-6 rounded-full bg-emerald-500/20 flex items-center justify-center mt-1">
-                            <div class="w-3 h-3 rounded-full bg-emerald-500"></div>
+                        <div class="w-5 h-5 md:w-6 md:h-6 rounded-full bg-emerald-500/20 flex items-center justify-center mt-1">
+                            <div class="w-2 h-2 md:w-3 md:h-3 rounded-full bg-emerald-500"></div>
                         </div>
                         <div>
-                            <h4 class="text-white font-semibold mb-1">Reduce Water Bills</h4>
-                            <p class="text-gray-400">Save up to 30% on water bills through efficient usage monitoring</p>
+                            <h4 class="text-white font-semibold mb-1 text-sm md:text-base">Reduce Water Bills</h4>
+                            <p class="text-gray-400 text-sm md:text-base">Save up to 30% on water bills through efficient usage monitoring</p>
                         </div>
                     </div>
                     <div class="flex gap-3">
-                        <div class="w-6 h-6 rounded-full bg-emerald-500/20 flex items-center justify-center mt-1">
-                            <div class="w-3 h-3 rounded-full bg-emerald-500"></div>
+                        <div class="w-5 h-5 md:w-6 md:h-6 rounded-full bg-emerald-500/20 flex items-center justify-center mt-1">
+                            <div class="w-2 h-2 md:w-3 md:h-3 rounded-full bg-emerald-500"></div>
                         </div>
                         <div>
-                            <h4 class="text-white font-semibold mb-1">Prevent Water Loss</h4>
-                            <p class="text-gray-400">Early leak detection saves thousands of liters annually</p>
+                            <h4 class="text-white font-semibold mb-1 text-sm md:text-base">Prevent Water Loss</h4>
+                            <p class="text-gray-400 text-sm md:text-base">Early leak detection saves thousands of liters annually</p>
                         </div>
                     </div>
                     <div class="flex gap-3">
-                        <div class="w-6 h-6 rounded-full bg-emerald-500/20 flex items-center justify-center mt-1">
-                            <div class="w-3 h-3 rounded-full bg-emerald-500"></div>
+                        <div class="w-5 h-5 md:w-6 md:h-6 rounded-full bg-emerald-500/20 flex items-center justify-center mt-1">
+                            <div class="w-2 h-2 md:w-3 md:h-3 rounded-full bg-emerald-500"></div>
                         </div>
                         <div>
-                            <h4 class="text-white font-semibold mb-1">Convenient Payments</h4>
-                            <p class="text-gray-400">Pay anywhere, anytime using M-Pesa or card</p>
+                            <h4 class="text-white font-semibold mb-1 text-sm md:text-base">Convenient Payments</h4>
+                            <p class="text-gray-400 text-sm md:text-base">Pay anywhere, anytime using M-Pesa or card</p>
                         </div>
                     </div>
                     <div class="flex gap-3">
-                        <div class="w-6 h-6 rounded-full bg-emerald-500/20 flex items-center justify-center mt-1">
-                            <div class="w-3 h-3 rounded-full bg-emerald-500"></div>
+                        <div class="w-5 h-5 md:w-6 md:h-6 rounded-full bg-emerald-500/20 flex items-center justify-center mt-1">
+                            <div class="w-2 h-2 md:w-3 md:h-3 rounded-full bg-emerald-500"></div>
                         </div>
                         <div>
-                            <h4 class="text-white font-semibold mb-1">Real-time Insights</h4>
-                            <p class="text-gray-400">Monitor consumption patterns and make informed decisions</p>
+                            <h4 class="text-white font-semibold mb-1 text-sm md:text-base">Real-time Insights</h4>
+                            <p class="text-gray-400 text-sm md:text-base">Monitor consumption patterns and make informed decisions</p>
                         </div>
                     </div>
                 </div>
             </div>
             
-            <div class="glass-card p-8" data-aos="fade-left">
-                <div class="flex items-center gap-3 mb-6">
-                    <div class="w-10 h-10 rounded-xl bg-emerald-500/20 flex items-center justify-center">
-                        <div class="w-5 h-5 rounded-sm bg-emerald-400"></div>
+            <div class="glass-card p-6 md:p-8 order-1 lg:order-2" data-aos="fade-left">
+                <div class="flex items-center gap-3 mb-4 md:mb-6">
+                    <div class="w-8 h-8 md:w-10 md:h-10 rounded-xl bg-emerald-500/20 flex items-center justify-center">
+                        <div class="w-4 h-4 md:w-5 md:h-5 rounded-sm bg-emerald-400"></div>
                     </div>
-                    <h3 class="text-xl font-bold text-white">Impact Statistics</h3>
+                    <h3 class="text-lg md:text-xl font-bold text-white">Impact Statistics</h3>
                 </div>
-                <div class="space-y-6">
+                <div class="space-y-4 md:space-y-6">
                     <div>
-                        <div class="flex justify-between text-white mb-2">
+                        <div class="flex justify-between text-white mb-2 text-sm md:text-base">
                             <span>Water Savings</span>
                             <span class="text-emerald-400">{{ water_savings_percentage|default:"30" }}%</span>
                         </div>
@@ -408,7 +433,7 @@
                         </div>
                     </div>
                     <div>
-                        <div class="flex justify-between text-white mb-2">
+                        <div class="flex justify-between text-white mb-2 text-sm md:text-base">
                             <span>Leak Detection Rate</span>
                             <span class="text-emerald-400">{{ leak_detection_rate|default:"95" }}%</span>
                         </div>
@@ -417,7 +442,7 @@
                         </div>
                     </div>
                     <div>
-                        <div class="flex justify-between text-white mb-2">
+                        <div class="flex justify-between text-white mb-2 text-sm md:text-base">
                             <span>Customer Satisfaction</span>
                             <span class="text-emerald-400">{{ satisfaction_rate|default:"98" }}%</span>
                         </div>
@@ -427,14 +452,14 @@
                     </div>
                 </div>
                 
-                <div class="grid grid-cols-2 gap-4 mt-8 pt-6 border-t border-white/10">
+                <div class="grid grid-cols-2 gap-4 mt-6 md:mt-8 pt-6 border-t border-white/10">
                     <div class="text-center">
-                        <div class="text-2xl font-bold text-emerald-400">{{ total_active_meters|default:"10K" }}+</div>
-                        <div class="text-gray-400 text-sm">Active Meters</div>
+                        <div class="text-xl md:text-2xl font-bold text-emerald-400">{{ total_active_meters|default:"10K" }}+</div>
+                        <div class="text-gray-400 text-xs md:text-sm">Active Meters</div>
                     </div>
                     <div class="text-center">
-                        <div class="text-2xl font-bold text-emerald-400">{{ total_water_saved|default:"1M" }}+</div>
-                        <div class="text-gray-400 text-sm">Liters Saved</div>
+                        <div class="text-xl md:text-2xl font-bold text-emerald-400">{{ total_water_saved|default:"1M" }}+</div>
+                        <div class="text-gray-400 text-xs md:text-sm">Liters Saved</div>
                     </div>
                 </div>
             </div>
@@ -442,97 +467,101 @@
     </div>
 </section>
 
-
-
 <!-- FAQ Section -->
-<section id="faq" class="py-20">
+<section id="faq" class="py-12 md:py-20">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-12" data-aos="fade-up">
-            <div class="inline-flex items-center gap-2 bg-emerald-500/20 border border-emerald-500/30 rounded-full px-4 py-1.5 mb-4">
+        <div class="text-center mb-8 md:mb-12" data-aos="fade-up">
+            <div class="inline-flex items-center gap-2 bg-emerald-500/20 border border-emerald-500/30 rounded-full px-3 py-1 md:px-4 md:py-1.5 mb-4">
                 <div class="w-2 h-2 rounded-full bg-emerald-500"></div>
-                <span class="text-emerald-400 text-sm font-medium">FAQ</span>
+                <span class="text-emerald-400 text-xs md:text-sm font-medium">FAQ</span>
             </div>
-            <h2 class="text-4xl md:text-5xl font-bold text-white mb-4">
+            <h2 class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-3 md:mb-4">
                 Frequently Asked Questions
             </h2>
         </div>
         
-        <div class="space-y-4">
-            <div class="glass-card p-6" data-aos="fade-up">
-                <h3 class="text-lg font-semibold text-white mb-2">How does the smart meter work?</h3>
-                <p class="text-gray-400">Our IoT-enabled smart meters automatically record water consumption in real-time and transmit data securely to our cloud platform for monitoring and billing.</p>
+        <div class="space-y-3 md:space-y-4">
+            <div class="glass-card p-5 md:p-6" data-aos="fade-up">
+                <h3 class="text-base md:text-lg font-semibold text-white mb-2">How does the smart meter work?</h3>
+                <p class="text-gray-400 text-sm md:text-base">Our IoT-enabled smart meters automatically record water consumption in real-time and transmit data securely to our cloud platform for monitoring and billing.</p>
             </div>
-            <div class="glass-card p-6" data-aos="fade-up" data-aos-delay="100">
-                <h3 class="text-lg font-semibold text-white mb-2">Can I pay via M-Pesa?</h3>
-                <p class="text-gray-400">Yes! Water Supply Management System integrates directly with M-Pesa. You can pay your water bills instantly using Lipa Na M-Pesa or M-Pesa Paybill.</p>
+            <div class="glass-card p-5 md:p-6" data-aos="fade-up" data-aos-delay="100">
+                <h3 class="text-base md:text-lg font-semibold text-white mb-2">Can I pay via M-Pesa?</h3>
+                <p class="text-gray-400 text-sm md:text-base">Yes! Water Supply Management System integrates directly with M-Pesa. You can pay your water bills instantly using Lipa Na M-Pesa or M-Pesa Paybill.</p>
             </div>
-            <div class="glass-card p-6" data-aos="fade-up" data-aos-delay="200">
-                <h3 class="text-lg font-semibold text-white mb-2">How accurate is the leak detection?</h3>
-                <p class="text-gray-400">Our leak detection algorithms have a 95% accuracy rate, identifying abnormal usage patterns and alerting you before significant water loss occurs.</p>
+            <div class="glass-card p-5 md:p-6" data-aos="fade-up" data-aos-delay="200">
+                <h3 class="text-base md:text-lg font-semibold text-white mb-2">How accurate is the leak detection?</h3>
+                <p class="text-gray-400 text-sm md:text-base">Our leak detection algorithms have a 95% accuracy rate, identifying abnormal usage patterns and alerting you before significant water loss occurs.</p>
             </div>
-            <div class="glass-card p-6" data-aos="fade-up" data-aos-delay="300">
-                <h3 class="text-lg font-semibold text-white mb-2">Is my data secure?</h3>
-                <p class="text-gray-400">Absolutely. We use bank-level encryption, secure data centers, and comply with Kenyan data protection regulations.</p>
+            <div class="glass-card p-5 md:p-6" data-aos="fade-up" data-aos-delay="300">
+                <h3 class="text-base md:text-lg font-semibold text-white mb-2">Is my data secure?</h3>
+                <p class="text-gray-400 text-sm md:text-base">Absolutely. We use bank-level encryption, secure data centers, and comply with Kenyan data protection regulations.</p>
             </div>
         </div>
     </div>
 </section>
 
 <!-- Contact Section -->
-<section id="contact" class="py-20">
+<section id="contact" class="py-12 md:py-20">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="glass-card p-8 md:p-12" data-aos="fade-up">
-            <div class="grid lg:grid-cols-2 gap-12">
+        <div class="glass-card p-6 md:p-8 lg:p-12" data-aos="fade-up">
+            <div class="grid lg:grid-cols-2 gap-8 md:gap-12">
                 <div>
-                    <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Ready to Get Started?</h2>
-                    <p class="text-gray-400 mb-6">Join thousands of satisfied customers managing their water supply efficiently with Water Supply Management System.</p>
-                    <div class="space-y-4">
+                    <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-3 md:mb-4">Ready to Get Started?</h2>
+                    <p class="text-gray-400 text-sm md:text-base mb-4 md:mb-6">Join thousands of satisfied customers managing their water supply efficiently with Water Supply Management System.</p>
+                    <div class="space-y-3 md:space-y-4">
                         <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center">
-                                <div class="w-4 h-4 rounded-sm bg-emerald-400"></div>
+                            <div class="w-8 h-8 md:w-10 md:h-10 rounded-full bg-emerald-500/20 flex items-center justify-center">
+                                <svg class="w-4 h-4 md:w-5 md:h-5 text-emerald-400" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
+                                </svg>
                             </div>
                             <div>
-                                <p class="text-gray-400 text-sm">Phone</p>
-                                <p class="text-white font-medium">{{ contact_phone|default:"+254 725 345 345" }}</p>
+                                <p class="text-gray-400 text-xs md:text-sm">Phone</p>
+                                <p class="text-white font-medium text-sm md:text-base">{{ contact_phone|default:"+254 725 345 345" }}</p>
                             </div>
                         </div>
                         <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center">
-                                <div class="w-5 h-3 rounded-sm bg-emerald-400"></div>
+                            <div class="w-8 h-8 md:w-10 md:h-10 rounded-full bg-emerald-500/20 flex items-center justify-center">
+                                <svg class="w-4 h-4 md:w-5 md:h-5 text-emerald-400" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                                </svg>
                             </div>
                             <div>
-                                <p class="text-gray-400 text-sm">Email</p>
-                                <p class="text-white font-medium">{{ contact_email|default:"hello@Water Supply Management System.co.ke" }}</p>
+                                <p class="text-gray-400 text-xs md:text-sm">Email</p>
+                                <p class="text-white font-medium text-sm md:text-base break-all">{{ contact_email|default:"hello@Water Supply Management System.co.ke" }}</p>
                             </div>
                         </div>
                         <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center">
-                                <div class="w-4 h-5 rounded-full bg-emerald-400"></div>
+                            <div class="w-8 h-8 md:w-10 md:h-10 rounded-full bg-emerald-500/20 flex items-center justify-center">
+                                <svg class="w-4 h-4 md:w-5 md:h-5 text-emerald-400" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                                </svg>
                             </div>
                             <div>
-                                <p class="text-gray-400 text-sm">Location</p>
-                                <p class="text-white font-medium">{{ contact_location|default:"Nairobi, Kenya" }}</p>
+                                <p class="text-gray-400 text-xs md:text-sm">Location</p>
+                                <p class="text-white font-medium text-sm md:text-base">{{ contact_location|default:"Nairobi, Kenya" }}</p>
                             </div>
                         </div>
                     </div>
                 </div>
                 
                 <div>
-                    <form method="post" action="{% url 'pages:contact_submit' %}" class="space-y-4">
+                    <form method="post" action="{% url 'pages:contact_submit' %}" class="space-y-3 md:space-y-4">
                         {% csrf_token %}
                         <div>
-                            <input type="text" name="name" class="glass-input" placeholder="Your Name" required>
+                            <input type="text" name="name" class="glass-input w-full" placeholder="Your Name" required>
                         </div>
                         <div>
-                            <input type="email" name="email" class="glass-input" placeholder="Your Email" required>
+                            <input type="email" name="email" class="glass-input w-full" placeholder="Your Email" required>
                         </div>
                         <div>
-                            <input type="tel" name="phone" class="glass-input" placeholder="Your Phone Number (Optional)">
+                            <input type="tel" name="phone" class="glass-input w-full" placeholder="Your Phone Number (Optional)">
                         </div>
                         <div>
-                            <textarea name="message" rows="4" class="glass-input" placeholder="Your Message" required></textarea>
+                            <textarea name="message" rows="4" class="glass-input w-full" placeholder="Your Message" required></textarea>
                         </div>
-                        <button type="submit" class="btn-primary w-full">
+                        <button type="submit" class="btn-primary w-full py-2 md:py-3 text-sm md:text-base">
                             Send Message
                             <span class="ml-2">→</span>
                         </button>
@@ -544,41 +573,41 @@
 </section>
 
 <!-- Footer -->
-<footer class="py-12 border-t border-white/10">
+<footer class="py-8 md:py-12 border-t border-white/10">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid md:grid-cols-4 gap-8">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
             <div>
-                <div class="flex items-center gap-2 mb-4">
-                    <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-emerald-500 to-teal-400"></div>
-                    <span class="text-xl font-bold text-white">Water Supply Management System</span>
+                <div class="flex items-center gap-2 mb-3 md:mb-4">
+                    <div class="w-6 h-6 md:w-8 md:h-8 rounded-lg bg-gradient-to-br from-emerald-500 to-teal-400"></div>
+                    <span class="text-base md:text-xl font-bold text-white">Water Supply Management System</span>
                 </div>
-                <p class="text-gray-400 text-sm">{{ footer_description|default:"Smart water supply management for modern Kenya." }}</p>
+                <p class="text-gray-400 text-xs md:text-sm">{{ footer_description|default:"Smart water supply management for modern Kenya." }}</p>
             </div>
             <div>
-                <h4 class="text-white font-semibold mb-3">Product</h4>
-                <ul class="space-y-2 text-sm text-gray-400">
-                    <li><a href="#features" class="hover:text-emerald-400 transition scroll-to">Features</a></li>
-                    <li><a href="#pricing" class="hover:text-emerald-400 transition scroll-to">Pricing</a></li>
-                    <li><a href="#faq" class="hover:text-emerald-400 transition scroll-to">FAQ</a></li>
+                <h4 class="text-white font-semibold mb-3 text-sm md:text-base">Product</h4>
+                <ul class="space-y-2 text-xs md:text-sm text-gray-400">
+                    <li><a href="#features" class="hover:text-emerald-400 transition scroll-to block">Features</a></li>
+                    <li><a href="#pricing" class="hover:text-emerald-400 transition scroll-to block">Pricing</a></li>
+                    <li><a href="#faq" class="hover:text-emerald-400 transition scroll-to block">FAQ</a></li>
                 </ul>
             </div>
             <div>
-                <h4 class="text-white font-semibold mb-3">Company</h4>
-                <ul class="space-y-2 text-sm text-gray-400">
-                    <li><a href="#" class="hover:text-emerald-400 transition">About Us</a></li>
-                    <li><a href="#contact" class="hover:text-emerald-400 transition scroll-to">Contact</a></li>
-                    <li><a href="#" class="hover:text-emerald-400 transition">Careers</a></li>
+                <h4 class="text-white font-semibold mb-3 text-sm md:text-base">Company</h4>
+                <ul class="space-y-2 text-xs md:text-sm text-gray-400">
+                    <li><a href="#" class="hover:text-emerald-400 transition block">About Us</a></li>
+                    <li><a href="#contact" class="hover:text-emerald-400 transition scroll-to block">Contact</a></li>
+                    <li><a href="#" class="hover:text-emerald-400 transition block">Careers</a></li>
                 </ul>
             </div>
             <div>
-                <h4 class="text-white font-semibold mb-3">Legal</h4>
-                <ul class="space-y-2 text-sm text-gray-400">
-                    <li><a href="#" class="hover:text-emerald-400 transition">Privacy Policy</a></li>
-                    <li><a href="#" class="hover:text-emerald-400 transition">Terms of Service</a></li>
+                <h4 class="text-white font-semibold mb-3 text-sm md:text-base">Legal</h4>
+                <ul class="space-y-2 text-xs md:text-sm text-gray-400">
+                    <li><a href="#" class="hover:text-emerald-400 transition block">Privacy Policy</a></li>
+                    <li><a href="#" class="hover:text-emerald-400 transition block">Terms of Service</a></li>
                 </ul>
             </div>
         </div>
-        <div class="text-center text-gray-500 text-sm pt-8 mt-8 border-t border-white/10">
+        <div class="text-center text-gray-500 text-xs md:text-sm pt-6 md:pt-8 mt-6 md:mt-8 border-t border-white/10">
             <p>&copy; 2024 Water Supply Management System. All rights reserved. Powered by Kayapro Technologies Limited</p>
         </div>
     </div>
@@ -586,18 +615,18 @@
 
 <!-- Messages/Alerts -->
 {% if messages %}
-    <div class="fixed top-20 right-4 z-50 space-y-2 max-w-md">
+    <div class="fixed top-16 md:top-20 right-2 left-2 sm:right-4 z-50 space-y-2 max-w-md mx-auto sm:mx-0">
         {% for message in messages %}
-            <div class="glass-card p-4 border-l-4 {% if message.tags == 'success' %}border-emerald-500{% elif message.tags == 'error' %}border-red-500{% else %}border-blue-500{% endif %} animate-slide-in">
+            <div class="glass-card p-3 md:p-4 border-l-4 {% if message.tags == 'success' %}border-emerald-500{% elif message.tags == 'error' %}border-red-500{% else %}border-blue-500{% endif %} animate-slide-in">
                 <div class="flex items-center gap-3">
                     {% if message.tags == 'success' %}
-                        <div class="w-5 h-5 rounded-full bg-emerald-500"></div>
+                        <div class="w-4 h-4 md:w-5 md:h-5 rounded-full bg-emerald-500"></div>
                     {% elif message.tags == 'error' %}
-                        <div class="w-5 h-5 rounded-full bg-red-500"></div>
+                        <div class="w-4 h-4 md:w-5 md:h-5 rounded-full bg-red-500"></div>
                     {% else %}
-                        <div class="w-5 h-5 rounded-full bg-blue-500"></div>
+                        <div class="w-4 h-4 md:w-5 md:h-5 rounded-full bg-blue-500"></div>
                     {% endif %}
-                    <p class="text-white text-sm">{{ message }}</p>
+                    <p class="text-white text-xs md:text-sm">{{ message }}</p>
                 </div>
             </div>
         {% endfor %}
@@ -610,7 +639,7 @@
                 message.style.opacity = '0';
                 message.style.transform = 'translateX(100px)';
                 setTimeout(function() {
-                    if(message.remove) message.remove();
+                    if(message.parentElement && message.remove) message.remove();
                 }, 300);
             });
         }, 5000);
@@ -630,6 +659,13 @@
             to {
                 opacity: 1;
                 transform: translateX(0);
+            }
+        }
+        
+        /* Responsive breakpoints */
+        @media (max-width: 480px) {
+            .xs\:hidden {
+                display: block;
             }
         }
     </style>
@@ -662,14 +698,28 @@
         });
     }
     
+    // Mobile menu toggle
+    const mobileMenuButton = document.getElementById('mobileMenuButton');
+    const mobileMenu = document.getElementById('mobileMenu');
+    
+    if (mobileMenuButton && mobileMenu) {
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+    }
+    
     // Smooth scroll for anchor links
     document.querySelectorAll('.scroll-to').forEach(link => {
         link.addEventListener('click', function(e) {
-            e.preventDefault();
             const targetId = this.getAttribute('href');
             if (targetId && targetId !== '#') {
                 const target = document.querySelector(targetId);
                 if (target) {
+                    e.preventDefault();
+                    // Close mobile menu if open
+                    if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
+                        mobileMenu.classList.add('hidden');
+                    }
                     const offset = 80;
                     const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - offset;
                     window.scrollTo({
