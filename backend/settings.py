@@ -19,7 +19,7 @@ if not os.environ.get('RENDER'):
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'django-insecure-wq8_efxzz-t*l7c00hgj3b&4a7)t3)f#k8!w*(+yrpc_5kh0(b')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DEBUG', 'True') == 'True'
+DEBUG = os.environ.get('DEBUG', 'False') == 'False'
 
 # Render deployment configuration
 RENDER = os.environ.get('RENDER', False)
