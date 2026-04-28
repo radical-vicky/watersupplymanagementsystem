@@ -27,8 +27,8 @@ RENDER = os.environ.get('RENDER', False)
 ALLOWED_HOSTS = [
     'localhost', 
     '127.0.0.1',
-    'your-app-name.onrender.com',  # Replace with your actual Render app name
-    '*.onrender.com',  # Allow all Render subdomains
+    'watersupplymanagementsystem.onrender.com',
+    '*.onrender.com',
 ]
 
 if RENDER:
@@ -108,28 +108,13 @@ TEMPLATES = [
 WSGI_APPLICATION = 'backend.wsgi.application'
 ASGI_APPLICATION = 'backend.asgi.application'
 
-# Database - Use PostgreSQL on Render, SQLite locally
-if RENDER:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': os.environ.get('PGDATABASE'),
-            'USER': os.environ.get('PGUSER'),
-            'PASSWORD': os.environ.get('PGPASSWORD'),
-            'HOST': os.environ.get('PGHOST'),
-            'PORT': os.environ.get('PGPORT', '5432'),
-            'OPTIONS': {
-                'sslmode': 'require',
-            },
-        }
+# Database - Use SQLite for both local and Render (simple and works)
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
-    }
+}
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
@@ -169,7 +154,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Custom User Model
 AUTH_USER_MODEL = 'accounts.User'
 
-# ========== DJANGO-ALLAUTH SETTINGS (No deprecated warnings) ==========
+# ========== DJANGO-ALLAUTH SETTINGS ==========
 SITE_ID = 1
 
 # Authentication Backends
@@ -181,15 +166,15 @@ AUTHENTICATION_BACKENDS = [
 # Login Methods - Allow login with username OR email
 ACCOUNT_LOGIN_METHODS = {'username', 'email'}
 
-# Signup Fields - Define what fields are required (NO deprecated ACCOUNT_EMAIL_REQUIRED)
+# Signup Fields
 ACCOUNT_SIGNUP_FIELDS = ['email*', 'username*', 'password1*', 'password2*']
 
-# Email verification - 'none' for development, 'mandatory' for production
+# Email verification
 ACCOUNT_EMAIL_VERIFICATION = 'none'
 
-# Rate limits - Use the new format (NOT deprecated ACCOUNT_LOGIN_ATTEMPTS_LIMIT)
+# Rate limits
 ACCOUNT_RATE_LIMITS = {
-    'login_failed': '5/300s',  # 5 attempts per 300 seconds
+    'login_failed': '5/300s',
 }
 
 # Other allauth settings
@@ -204,19 +189,8 @@ LOGIN_REDIRECT_URL = '/dashboard/'
 LOGIN_URL = '/accounts/login/'
 LOGOUT_REDIRECT_URL = '/'
 
-# Email backend - Configure for Render
-if RENDER:
-    # Use console email for Render (or configure SMTP)
-    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-    # For production email, use:
-    # EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-    # EMAIL_HOST = os.environ.get('EMAIL_HOST', 'smtp.gmail.com')
-    # EMAIL_PORT = int(os.environ.get('EMAIL_PORT', 587))
-    # EMAIL_USE_TLS = True
-    # EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
-    # EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
-else:
-    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# Email backend
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # Social Account Providers
 SOCIALACCOUNT_PROVIDERS = {
@@ -239,14 +213,8 @@ CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 # CORS Settings
-CORS_ALLOW_ALL_ORIGINS = DEBUG  # Only allow all origins in development
+CORS_ALLOW_ALL_ORIGINS = DEBUG
 CORS_ALLOW_CREDENTIALS = True
-
-if not DEBUG:
-    CORS_ALLOWED_ORIGINS = [
-        'https://your-app-name.onrender.com',  # Replace with your Render app name
-        'https://*.onrender.com',
-    ]
 
 # REST Framework Settings
 REST_FRAMEWORK = {
@@ -261,7 +229,7 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 20,
 }
 
-# Channels Configuration (for WebSockets)
+# Channels Configuration
 CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels.layers.InMemoryChannelLayer',
@@ -271,33 +239,27 @@ CHANNEL_LAYERS = {
 # Account Adapter
 ACCOUNT_ADAPTER = 'accounts.adapter.CustomAccountAdapter'
 
-# M-Pesa Configuration (for payments)
+# M-Pesa Configuration
 MPESA_CONSUMER_KEY = os.environ.get('MPESA_CONSUMER_KEY', '')
 MPESA_CONSUMER_SECRET = os.environ.get('MPESA_CONSUMER_SECRET', '')
 MPESA_PASSKEY = os.environ.get('MPESA_PASSKEY', '')
 MPESA_SHORTCODE = os.environ.get('MPESA_SHORTCODE', '174379')
 MPESA_ENVIRONMENT = os.environ.get('MPESA_ENVIRONMENT', 'sandbox')
 
-# Twilio Configuration (for SMS notifications)
+# Twilio Configuration
 TWILIO_ACCOUNT_SID = os.environ.get('TWILIO_ACCOUNT_SID', '')
 TWILIO_AUTH_TOKEN = os.environ.get('TWILIO_AUTH_TOKEN', '')
 TWILIO_PHONE_NUMBER = os.environ.get('TWILIO_PHONE_NUMBER', '')
 
-# Celery Configuration
-if RENDER:
-    # Use Redis on Render
-    CELERY_BROKER_URL = os.environ.get('REDIS_URL', 'redis://localhost:6379/0')
-    CELERY_RESULT_BACKEND = os.environ.get('REDIS_URL', 'redis://localhost:6379/0')
-else:
-    CELERY_BROKER_URL = os.environ.get('REDIS_URL', 'redis://localhost:6379/0')
-    CELERY_RESULT_BACKEND = os.environ.get('REDIS_URL', 'redis://localhost:6379/0')
-
+# Celery Configuration (optional - for background tasks)
+CELERY_BROKER_URL = os.environ.get('REDIS_URL', 'redis://localhost:6379/0')
+CELERY_RESULT_BACKEND = os.environ.get('REDIS_URL', 'redis://localhost:6379/0')
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'Africa/Nairobi'
 
-# Logging Configuration - FIXED FOR RENDER
+# Logging Configuration - Fixed for Render
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -372,4 +334,4 @@ ACCOUNT_EMAIL_SUBJECT_PREFIX = '[Water Supply System] '
 if not RENDER:
     LOCALHOST_URL = 'http://localhost:8000'
 else:
-    LOCALHOST_URL = f"https://{os.environ.get('RENDER_EXTERNAL_HOSTNAME', 'your-app-name.onrender.com')}"
+    LOCALHOST_URL = f"https://{os.environ.get('RENDER_EXTERNAL_HOSTNAME', 'watersupplymanagementsystem.onrender.com')}"
